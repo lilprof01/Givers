@@ -7,7 +7,7 @@ const DarkModeToggle = () => {
   return (
     <div
       onClick={() => setDarkMode((prev) => !prev)}
-      className="h-10 w-10 bg-black fixed bottom-5 right-5 rounded-full"
+      className="h-5 w-5 bg-black fixed bottom-5 right-5 rounded-full"
     ></div>
   );
 };
