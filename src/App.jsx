@@ -1,11 +1,14 @@
+import { ThemeProvider } from "./Context/themeContext";
 import Landing from "./Pages/Main/Landing/Landing";
-
+import { Route, Routes } from "react-router-dom";
 
 const App = () => {
   return (
-    <>
-      <Landing />
-    </>
+    <ThemeProvider>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    </ThemeProvider>
   );
 };
 
