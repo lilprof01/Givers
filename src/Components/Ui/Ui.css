@@ -1,0 +1,10 @@
+.toggle {
+  box-shadow: inset 8px -4px 0px 0px;
+  background: transparent;
+  transition: all 0.6s;
+}
+
+.toggle-off {
+  box-shadow: inset 15px -4px 0px 1px;
+  transition: all 1s;
+}

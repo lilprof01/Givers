@@ -13,7 +13,7 @@ const Landing = () => {
     <main className="flex flex-col bg-gray-300 dark:bg-black dark:text-white">
       <DarkModeToggle />
       <Header />
-      <section className="bg-gradient-to-tl from-blue-400/35 via-transparent to-green-400/50 dark:to-green-400/10">
+      <section className="bg-gradient-to-tl from-blue-400/35 via-transparent to-green-400/10 dark:to-green-400/10">
         <Hero />
         <HowItWorks />
         <Benefits />
