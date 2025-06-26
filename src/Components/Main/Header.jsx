@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "/assets/images/logo.png";
 
 const Header = () => {
@@ -15,9 +16,9 @@ const Header = () => {
         </div>
       </div>
       <div className="flex space-x-2">
-        <button className="px-4 py-2 border-2 border-green-600 text-green-600 rounded-lg font-semibold cursor-pointer hover:scale-105 hover:bg-green-600 hover:text-white transition-all duration-300">
+        <Link to={"/dashboard"} className="px-4 py-2 border-2 border-green-600 text-green-600 rounded-lg font-semibold cursor-pointer hover:scale-105 hover:bg-green-600 hover:text-white transition-all duration-300">
           Login
-        </button>
+        </Link>
         <button className="px-4 py-2 bg-blue-500 rounded-lg text-white font-semibold cursor-pointer hover:scale-105 transition-all duration-300">
           Sign Up
         </button>

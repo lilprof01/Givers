@@ -3,11 +3,45 @@ import { Outlet } from 'react-router-dom'
 import Sidebar from '../../../Components/Dashboard/Sidebar'
 import MobileNav from '../../../Components/Dashboard/MobileNav'
 import Header from '../../../Components/Dashboard/Header'
+import { Home, Package, Search, Bell, Settings, LogOut } from "lucide-react";
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openNav, setOpenNav] = useState(false);
+
+  const MenuLinks = [
+  {
+    icon: <Home strokeWidth={1} />,
+    text: "Dashboard",
+    menuName: "home"
+  },
+  {
+    icon: <Package strokeWidth={1} />,
+    text: "My Gifts",
+    menuName: "myGifts"
+  },
+  {
+    icon: <Search strokeWidth={1} />,
+    text: "Browse Items",
+    menuName: "browseItems"
+  },
+  {
+    icon: <Bell strokeWidth={1} />,
+    text: "Notifications",
+    menuName: "notifications"
+  },
+  {
+    icon: <Settings strokeWidth={1} />,
+    text: "Settings",
+    menuName: "settings"
+  },
+  {
+    icon: <LogOut strokeWidth={1} />,
+    text: "Logout",
+    menuName: "logout"
+  },
+]
 
   const handleSelectedMenu = (menu) => {
     setSelectedMenu(menu);
@@ -18,15 +52,16 @@ const DashboardLayout = () => {
     <main
           className={`flex flex-col sm:grid ${
             isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[250px_1fr]"
-          } grid-rows-[80px_1fr] h-screen transition-all duration-300 dark:bg-[#121212] dark:text-white`}
+          } grid-rows-[80px_1fr] h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
         >
           <Sidebar
             isCollapsed={isCollapsed}
             setIsCollapsed={setIsCollapsed}
             handleSelectedMenu={handleSelectedMenu}
             selectedMenu={selectedMenu}
+            MenuLinks={MenuLinks}
           />
-          <Header openNav={openNav} setOpenNav={setOpenNav} />
+          <Header setIsCollapsed={setIsCollapsed} openNav={openNav} setOpenNav={setOpenNav} selectedMenu={selectedMenu} MenuLinks={MenuLinks} />
           {openNav && (
             <MobileNav
               openNav={openNav}

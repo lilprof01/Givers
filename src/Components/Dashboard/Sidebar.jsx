@@ -9,6 +9,7 @@ const Sidebar = ({
   setIsCollapsed,
   selectedMenu,
   handleSelectedMenu,
+  MenuLinks,
 }) => {
   return (
     // sidebar for dashboard page
@@ -27,65 +28,33 @@ const Sidebar = ({
           <div className="h-1 w-8 bg-purple-900"></div>
         </div> */}
 
-        {!isCollapsed ? (
+        
           <Link to="/" className="mr-2 transition-all duration-300 ml-2">
             <div className="flex items-center mb-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-gray-500 via-blue-300 to-green-300 rounded-xl mr-2">
+              <div className={`${isCollapsed ? 'ml-2' : ''} inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-gray-500 via-blue-300 to-green-300 rounded-xl mr-2 transition-all duration-500`}>
                 <img src={logo} />
               </div>
-              <div>
-                <h3 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-black dark:from-blue-500 via-blue-400 to-green-400 text-transparent">Givers</h3>
-                <p className="text-sm font-light">Dashboard</p>
+              <div className={``}>
+                <h3 className={`${isCollapsed ? 'text-[0px]' : 'text-2xl'} font-bold bg-clip-text bg-gradient-to-r from-black dark:from-blue-500 via-blue-400 to-green-400 text-transparent transition-all duration-500`}>
+                  Givers
+                </h3>
+                <p className={`${isCollapsed ? 'text-[0px]' : 'text-xs'} font-light transition-all duration-500`}>Dashboard</p>
               </div>
             </div>
           </Link>
-        ) : (
-          ""
-        )}
       </div>
       <div className="py-8 px-2 h-[80%] flex flex-col justify-between align-middle">
-        <Menu
-          icon={<Home strokeWidth={1} />}
-          text="Dashboard"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "home"}
-          handleSelectedMenu={() => handleSelectedMenu("home")}
-        />
-        <Menu
-          icon={<Package strokeWidth={1} />}
-          text="My Items"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "myItems"}
-          handleSelectedMenu={() => handleSelectedMenu("myItems")}
-        />
-        <Menu
-          icon={<Search strokeWidth={1} />}
-          text="Browse Items"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "browseItems"}
-          handleSelectedMenu={() => handleSelectedMenu("browseItems")}
-        />
-        <Menu
-          icon={<Bell strokeWidth={1} />}
-          text="Notifications"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "display"}
-          handleSelectedMenu={() => handleSelectedMenu("notifications")}
-        />
-        <Menu
-          icon={<Settings strokeWidth={1} />}
-          text="Settings"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "language"}
-          handleSelectedMenu={() => handleSelectedMenu("language")}
-        />
-        <Menu
-          icon={<LogOut strokeWidth={1} />}
-          text="Logout"
-          isCollapsed={isCollapsed}
-          selectedMenu={selectedMenu === "logout"}
-          handleSelectedMenu={() => handleSelectedMenu("logout")}
-        />
+        {MenuLinks.map((menu) => (
+          <>
+            <Menu
+              icon={menu.icon}
+              text={menu.text}
+              isCollapsed={isCollapsed}
+              selectedMenu={selectedMenu === menu.menuName}
+              handleSelectedMenu={() => handleSelectedMenu(menu.menuName)}
+            />
+          </>
+        ))}
       </div>
       <div
         onClick={() => handleSelectedMenu("profile")}
@@ -94,19 +63,16 @@ const Sidebar = ({
         } p-3 items-center align-middle gap-2 hover:cursor-pointer border-t`}
       >
         <div className="h-10 w-10 bg-green-300 rounded-full flex items-center justify-center">
-          {/* <FaUser className="h-6 w-6" /> */}
           AP
         </div>
 
-        <div>
+        <div className={`${isCollapsed ? 'text-[0px]' : ''} transition-all duration-500`}>
           <p
-          className={`font-semibold ${
-            isCollapsed ? "hidden" : "block"
-          } transition-all duration-500`}
-        >
-          Aniyajuwon Pelumi
-        </p>
-        <a className="text-sm font-light">adewumime@gmail.com</a>
+            className={`font-semibold`}
+          >
+            Aniyajuwon Pelumi
+          </p>
+          <a className={`${isCollapsed ? 'text-[0px]' : 'text-xs'} font-light transition-all duration-500`}>adewumime@gmail.com</a>
         </div>
       </div>
     </aside>
