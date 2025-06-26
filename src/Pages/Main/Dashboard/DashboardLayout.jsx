@@ -17,7 +17,7 @@ const DashboardLayout = () => {
   return (
     <main
           className={`flex flex-col sm:grid ${
-            isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[200px_1fr]"
+            isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[250px_1fr]"
           } grid-rows-[80px_1fr] h-screen transition-all duration-300 dark:bg-[#121212] dark:text-white`}
         >
           <Sidebar
@@ -27,19 +27,13 @@ const DashboardLayout = () => {
             selectedMenu={selectedMenu}
           />
           <Header openNav={openNav} setOpenNav={setOpenNav} />
-          {/* {selectedMenu === "home" && <Levels />}
-          {selectedMenu === "leaderboard" && <Leaderboard />}
-          {selectedMenu === "display" && <Display />}
-          {selectedMenu === "language" && <Language />}
-          {selectedMenu === "profile" && <Profile />}
-          {selectedMenu === "logout" && <Logout />} */}
-          {/* {openNav && (
+          {openNav && (
             <MobileNav
               openNav={openNav}
               handleSelectedMenu={handleSelectedMenu}
               selectedMenu={selectedMenu}
             />
-          )} */}
+          )}
         </main>
   )
 }

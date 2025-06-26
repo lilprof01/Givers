@@ -15,7 +15,7 @@ const Header = ({ openNav, setOpenNav}) => {
 
   return (
     // Header component for dashboard
-    <header className={`p-6 border-b col-start-2 transition-all duration-300 ${window.innerWidth < 768 ? 'fixed w-full' : ''} flex justify-between sm:justify-end items-center align-middle`}>
+    <header className={`p-6 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 col-start-2 transition-all duration-300 ${window.innerWidth < 768 ? 'fixed w-full' : ''} flex justify-between sm:justify-end items-center align-middle`}>
 
       {/* Hamburger menu icon */}
       <div
