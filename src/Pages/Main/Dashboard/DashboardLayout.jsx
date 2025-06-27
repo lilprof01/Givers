@@ -4,6 +4,7 @@ import Sidebar from '../../../Components/Dashboard/Sidebar'
 import MobileNav from '../../../Components/Dashboard/MobileNav'
 import Header from '../../../Components/Dashboard/Header'
 import { Home, Package, Search, Bell, Settings, LogOut } from "lucide-react";
+import DarkModeToggle from '../../../Components/Ui/darkModeToggle'
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -51,7 +52,7 @@ const DashboardLayout = () => {
   return (
     <main
           className={`flex flex-col sm:grid ${
-            isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[250px_1fr]"
+            isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[220px_1fr]"
           } grid-rows-[80px_1fr] h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
         >
           <Sidebar
@@ -69,6 +70,8 @@ const DashboardLayout = () => {
               selectedMenu={selectedMenu}
             />
           )}
+          <Outlet />
+          <DarkModeToggle />
         </main>
   )
 }

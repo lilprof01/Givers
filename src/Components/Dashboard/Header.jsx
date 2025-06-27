@@ -25,8 +25,8 @@ const Header = ({
         window.innerWidth < 768 ? "fixed w-full" : ""
       } flex justify-between items-center align-middle`}
     >
-      <div className="flex items-center gap-5 w-full">
-        <div onClick={() => setIsCollapsed((prev) => !prev)} className="">
+      <div className="flex items-center gap-5 w-[40%]">
+        <div onClick={() => setIsCollapsed((prev) => !prev)} className="cursor-pointer">
           <PanelLeft strokeWidth={1} size={18} />
         </div>
         <p className="font-semibold text-xl text-gray-800 dark:text-gray-200">
@@ -34,14 +34,14 @@ const Header = ({
         </p>
       </div>
 
-      <div className="flex justify-between items-center align-middle w-full">
-        <input type="text" className="w-[60%] outline dark:outline-gray-400 rounded-full px-5 py-1 dark:text-gray-400" placeholder="search items, categories..." />
-        <button className="flex justify-center items-center align-middle gap-3 bg-gradient-to-r from-blue-500 to-green-500 px-4 py-2 rounded-full">
-          <Plus size={15} />
+      <div className="flex justify-end items-center align-middle gap-5 w-[60%]">
+        <input type="text" className="w-[50%] outline dark:outline-gray-400 rounded-full px-5 py-1 text-gray-600 dark:text-gray-400 placeholder:text-gray-400" placeholder="search items, categories..." />
+        <button className="flex justify-center items-center align-middle gap-3 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 cursor-pointer px-4 py-2 rounded-full text-white font-semibold">
+          <Plus size={18} />
           Give Item
         </button>
         <div><Bell /></div>
-        <div className="h-10 w-10 bg-green-300 rounded-full flex items-center justify-center">
+        <div className="h-10 w-10 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center text-white">
           AP
         </div>
       </div>
