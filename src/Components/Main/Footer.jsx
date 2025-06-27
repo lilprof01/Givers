@@ -1,5 +1,5 @@
 
-import { Users, Gift } from "lucide-react";
+import { Users, Gift, HandHeart } from "lucide-react";
 import logo from "/assets/images/logo.png";
 
 const Footer = () => {
@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="flex items-center mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 via-black to-green-500 rounded-xl mr-4">
-                <img src={logo} />
+                <HandHeart className="texxt-white" />
               </div>
               <h3 className="text-2xl font-bold">Givers</h3>
             </div>
