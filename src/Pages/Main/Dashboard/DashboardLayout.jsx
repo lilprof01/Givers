@@ -8,7 +8,7 @@ import DarkModeToggle from '../../../Components/Ui/darkModeToggle'
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [openNav, setOpenNav] = useState(false);
 
   const MenuLinks = [
