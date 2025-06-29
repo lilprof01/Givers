@@ -1,6 +1,7 @@
+@reference "tailwindcss";
+
 .toggle {
   box-shadow: inset 8px -4px 0px 0px;
-  background: transparent;
   transition: all 0.6s;
 }
 
