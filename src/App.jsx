@@ -18,10 +18,9 @@ const App = () => {
           <Route path="/dashboard/userDashboard" element={<Dashboard />} />
         </Route>
         <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgotpassword" element={<ResetPassword />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          <Route path="/verifyemail" element={<VerifyEmail />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgotpassword" element={<ResetPassword />} />
+        <Route path="/verifyemail" element={<VerifyEmail />} />
       </Routes>
     </ThemeProvider>
   );
