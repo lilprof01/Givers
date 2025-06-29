@@ -1,21 +1,11 @@
 import Menu from "./Menu";
-import logo from "/assets/images/logo.png";
-import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
-  Home,
-  Package,
-  Search,
-  Bell,
-  Settings,
-  LogOut,
-  HandCoins,
   HandHeart,
 } from "lucide-react";
 
 const Sidebar = ({
   isCollapsed,
-  setIsCollapsed,
   selectedMenu,
   handleSelectedMenu,
   MenuLinks,
