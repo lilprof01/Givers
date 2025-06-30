@@ -1,5 +1,10 @@
 import { Bell, PanelLeft, Plus } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import {
+  doc, getDoc,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../Authentication/Firebase";
 
 const Header = ({
   setIsCollapsed,
@@ -8,6 +13,31 @@ const Header = ({
   selectedMenu,
   MenuLinks,
 }) => {
+  const [userData, setUserData] = useState({ username: "", email: "" });
+
+useEffect(() => {
+  // 1️⃣  Wait for Firebase to emit the current user
+  const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+    if (!fbUser) return;           // nobody signed in
+
+    try {
+      // 2️⃣  Fetch that user’s document directly by UID
+      const snap = await getDoc(doc(db, "users", fbUser.uid));
+
+      if (snap.exists()) {
+        const { username = "", email = "" } = snap.data();
+        setUserData({ username, email });
+      }
+    } catch (err) {
+      console.error("Failed to load user data:", err);
+    }
+  });
+
+  // 3️⃣  Clean up the listener when the component unmounts
+  return () => unsubscribe();
+}, []);
+
+
   const handleOpenNav = () => {
     setOpenNav(!openNav);
 
@@ -42,7 +72,8 @@ const Header = ({
         </button>
         <div><Bell /></div>
         <div className="h-10 w-10 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center text-white">
-          AP
+        
+          {userData.username?.[0]?.toUpperCase() || "U"}
         </div>
       </div>
 

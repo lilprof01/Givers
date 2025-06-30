@@ -6,7 +6,6 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Authentication/Login";
 import Signup from "./Authentication/Signup";
 import ResetPassword from "./Authentication/ResetPassword";
-// import Dashboard from "./Pages/Dashboard";
 import VerifyEmail from "./Authentication/VerifyEmail";
 
 const App = () => {
@@ -20,7 +19,6 @@ const App = () => {
         <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotpassword" element={<ResetPassword />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/verifyemail" element={<VerifyEmail />} />
       </Routes>
     </ThemeProvider>
