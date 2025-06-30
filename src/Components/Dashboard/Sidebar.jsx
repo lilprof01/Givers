@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Menu from "./Menu";
-// import logo from "/assets/images/logo.png";
-// import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
-  Home,
-  Package,
-  Search,
-  Bell,
-  Settings,
-  LogOut,
-  HandCoins,
   HandHeart,
 } from "lucide-react";
-import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../Authentication/Firebase";
 
 const Sidebar = ({
   isCollapsed,
-  setIsCollapsed,
   selectedMenu,
   handleSelectedMenu,
   MenuLinks,
@@ -42,21 +29,18 @@ useEffect(() => {
 
   return (
     // sidebar for dashboard page
-    <aside className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 hidden sm:flex flex-col justify-between pt-5">
+    <aside
+      className={`bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 sm:flex flex-col justify-between pt-5 ${
+        window.innerWidth < 768 ? "fixed w-[250px] h-full z-[999]" : ""
+      } ${
+        window.innerWidth < 768 && isCollapsed ? "-translate-x-[250px]" : ""
+      }`}
+    >
       <div
         className={`flex ${
           isCollapsed ? "" : ""
         } items-center align-middle transition-all duration-300`}
       >
-        {/* <div
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="flex flex-col justify-center items-center align-middle gap-1 p-4 hover:cursor-pointer"
-        >
-          <div className="h-1 w-8 bg-purple-900"></div>
-          <div className="h-1 w-8 bg-purple-900"></div>
-          <div className="h-1 w-8 bg-purple-900"></div>
-        </div> */}
-
         <Link to="/" className="mr-2 transition-all duration-300 ml-2">
           <div className="flex items-center mb-6">
             <div

@@ -8,3 +8,7 @@
 @theme {
   --font-sour-gummy: 'Sour Gummy', sans-serif;
 }
+
+html {
+  user-select: none;
+}
