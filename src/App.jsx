@@ -14,9 +14,7 @@ const App = () => {
     <ThemeProvider>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route path="/dashboard/userDashboard" element={<Dashboard />} />
-        </Route>
+        <Route path="/dashboard" element={<DashboardLayout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgotpassword" element={<ResetPassword />} />
