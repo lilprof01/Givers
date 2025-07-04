@@ -47,12 +47,6 @@ const Profile = () => {
       color: "text-blue-500",
     },
     {
-      label: "Community Rating",
-      value: "4.9",
-      icon: Star,
-      color: "text-yellow-500",
-    },
-    {
       label: "Trust Score",
       value: "98%",
       icon: Shield,
@@ -82,7 +76,7 @@ const Profile = () => {
   return (
     <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll">
       {/* Profile Header */}
-      <div className="bg-gradient-to-r from-blue-50 via-white to-green-50 rounded-2xl p-8 border border-gray-100">
+      <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900 dark:to-green-900 text-gray-900 dark:text-gray-200 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
           {/* Avatar Section */}
           <div className="relative">
@@ -154,10 +148,10 @@ const Profile = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold">
                   {profile.name}
                 </h1>
-                <div className="flex flex-wrap gap-4 text-gray-600">
+                <div className="flex flex-wrap gap-4 opacity-80">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
                     <span>{profile.email}</span>
@@ -171,7 +165,7 @@ const Profile = () => {
                     <span>Joined {profile.joinDate}</span>
                   </div>
                 </div>
-                <p className="text-gray-700 max-w-2xl">{profile.bio}</p>
+                <p className="max-w-2xl">{profile.bio}</p>
               </div>
             )}
 
@@ -207,34 +201,34 @@ const Profile = () => {
           </div>
 
           {/* Trust Badge */}
-          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+          <div className="bg-white dark:bg-black/50  text-gray-900 dark:text-gray-200 rounded-xl p-4 border border-gray-200 shadow-sm">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium">
                 Verified Member
               </p>
-              <p className="text-xs text-gray-500">Trust Score: 98%</p>
+              <p className="text-xs opacity-80">Trust Score: 98%</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stats.map((stat, index) => (
           <div
             key={index}
-            className="bg-white/80 backdrop-blur-sm border-gray-100 shadow hover:shadow-lg transition-all duration-200"
+            className="bg-white/80 dark:bg-black/80 text-gray-900 dark:text-gray-200 backdrop-blur-sm border-gray-100 shadow hover:shadow-lg transition-all duration-200"
           >
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold">
                     {stat.value}
                   </p>
-                  <p className="text-sm text-gray-600">{stat.label}</p>
+                  <p className="text-sm opacity-90">{stat.label}</p>
                 </div>
                 <stat.icon className={`w-8 h-8 ${stat.color}`} />
               </div>
@@ -246,9 +240,9 @@ const Profile = () => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Achievements */}
-        <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm border-gray-100">
+        <div className="lg:col-span-2">
           <div>
-            <div className="flex items-center gap-2 font-bold">
+            <div className="flex items-center gap-2 font-bold mb-2">
               <Award className="w-5 h-5" />
               Achievements
             </div>
@@ -258,15 +252,15 @@ const Profile = () => {
               {achievements.map((achievement, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200"
+                  className=" text-gray-900 dark:text-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-black/20 dark:to-black/80 rounded-xl p-4 border border-gray-200 dark:border-none"
                 >
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">{achievement.icon}</div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold mb-1">
                         {achievement.title}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm opacity-80">
                         {achievement.description}
                       </p>
                     </div>
@@ -279,8 +273,8 @@ const Profile = () => {
       </div>
 
       {/* Activity Feed */}
-      <div className="bg-white/80 backdrop-blur-sm border-gray-100">
-        <div>
+      <div className="">
+        <div className="mb-2">
           <div>Recent Activity</div>
         </div>
         <div>
@@ -313,7 +307,7 @@ const Profile = () => {
             ].map((activity, index) => (
               <div
                 key={index}
-                className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
+                className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-black/50 rounded-lg"
               >
                 <div
                   className={`w-2 h-2 rounded-full ${
@@ -329,9 +323,9 @@ const Profile = () => {
                 <div className="flex-1">
                   <p className="text-sm">
                     <span className="font-medium">{activity.action}</span>{" "}
-                    <span className="text-gray-600">{activity.item}</span>
+                    <span className="opacity-90">{activity.item}</span>
                   </p>
-                  <p className="text-xs text-gray-500">{activity.time}</p>
+                  <p className="text-xs opacity-70">{activity.time}</p>
                 </div>
               </div>
             ))}
