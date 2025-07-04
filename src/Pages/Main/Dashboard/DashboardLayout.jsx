@@ -7,6 +7,7 @@ import { Home, Package, Bell, Settings, LogOut } from "lucide-react";
 import DarkModeToggle from "../../../Components/Ui/darkModeToggle";
 import Dashboard from "./Dashboard";
 import MyItems from "./MyItems";
+import Profile from "./Profile";
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -48,6 +49,9 @@ const DashboardLayout = () => {
       navigate('/');
     } else {
       setSelectedMenu(menu);
+      if (window.innerWidth <= 765) {
+        setIsCollapsed(true);
+      }
     }
     setOpenNav(false);
   };
@@ -57,7 +61,9 @@ const DashboardLayout = () => {
       case "home":
         return <Dashboard />;
       case "myItems":
-        return <MyItems />
+        return <MyItems />;
+      case "profile":
+        return <Profile />
     }
   }
 

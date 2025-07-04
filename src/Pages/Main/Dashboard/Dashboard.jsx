@@ -155,7 +155,7 @@ const Dashboard = () => {
                 onClick={() => handleItemClick(item)}
               >
                 <div className="text-center mb-3">
-                  <div className="text-4xl mb-2">{item.image}</div>
+                  <div className="text-7xl mb-3">{item.image}</div>
                   <h3 className="font-semibold mb-1">{item.title}</h3>
                   <p className="text-sm opacity-70 mb-2 line-clamp-1">{item.description}</p>
                 </div>

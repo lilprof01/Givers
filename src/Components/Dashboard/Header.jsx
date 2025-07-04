@@ -40,10 +40,6 @@ const Header = ({
           <Plus size={18} />
           Give Item
         </button>
-        <div><Bell /></div>
-        <div className="h-10 w-10 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center text-white">
-          AP
-        </div>
       </div>
     </header>
   );

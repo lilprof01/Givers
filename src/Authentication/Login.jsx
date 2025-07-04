@@ -22,7 +22,7 @@ const Login = () => {
       .then((userCredential) => {
         // console.log(userCredential)
         toast.success("Logging you into your account...");
-        setTimeout(() => navigate("/dashboard/userDashboard"), 3000);
+        setTimeout(() => navigate("/dashboard"), 3000);
       })
       .catch((error) => {
         toast.error("Invalid Email or Password", { position: "top-center" });
