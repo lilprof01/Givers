@@ -3,8 +3,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../../Components/Dashboard/Sidebar";
 import MobileNav from "../../../Components/Dashboard/MobileNav";
 import Header from "../../../Components/Dashboard/Header";
-import { Home, Package, Search, Bell, Settings, LogOut } from "lucide-react";
+import { Home, Package, Bell, Settings, LogOut } from "lucide-react";
 import DarkModeToggle from "../../../Components/Ui/darkModeToggle";
+import Dashboard from "./Dashboard";
+import MyItems from "./MyItems";
+import Profile from "./Profile";
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -14,18 +17,13 @@ const DashboardLayout = () => {
   const MenuLinks = [
     {
       icon: <Home strokeWidth={1} />,
-      text: "Dashboard",
+      text: "Home",
       menuName: "home",
     },
     {
       icon: <Package strokeWidth={1} />,
-      text: "My Gifts",
-      menuName: "myGifts",
-    },
-    {
-      icon: <Search strokeWidth={1} />,
-      text: "Browse Items",
-      menuName: "browseItems",
+      text: "My Items",
+      menuName: "myItems",
     },
     {
       icon: <Bell strokeWidth={1} />,
@@ -51,9 +49,23 @@ const DashboardLayout = () => {
       navigate('/');
     } else {
       setSelectedMenu(menu);
+      if (window.innerWidth <= 765) {
+        setIsCollapsed(true);
+      }
     }
     setOpenNav(false);
   };
+
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case "home":
+        return <Dashboard />;
+      case "myItems":
+        return <MyItems />;
+      case "profile":
+        return <Profile />
+    }
+  }
 
   return (
     <main
@@ -82,7 +94,7 @@ const DashboardLayout = () => {
           selectedMenu={selectedMenu}
         />
       )}
-      <Outlet />
+      {renderContent()}
       <DarkModeToggle />
     </main>
   );

@@ -53,9 +53,10 @@ const Sidebar = ({
         </Link>
       </div>
       <div className="py-8 px-2 h-[80%] flex flex-col justify-between align-middle">
-        {MenuLinks.map((menu) => (
+        {MenuLinks.map((menu, index) => (
           <>
             <Menu
+              key={index}
               icon={menu.icon}
               text={menu.text}
               isCollapsed={isCollapsed}
