@@ -61,6 +61,7 @@ const Dashboard = () => {
           location: data.location,
           condition: data.itemStatus, // or another field if you store “condition”
           giver: data.giverName,
+          giverId: data.giverId, 
           datePosted: formatDistanceToNow(
             data.createdAt?.toDate?.() || new Date(),
             { addSuffix: true }
