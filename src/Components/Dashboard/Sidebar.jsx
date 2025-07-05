@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import {
   HandHeart,
 } from "lucide-react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../Authentication/Firebase";
 
 const Sidebar = ({
   isCollapsed,

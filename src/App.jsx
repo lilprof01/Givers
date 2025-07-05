@@ -7,6 +7,7 @@ import Login from "./Authentication/Login";
 import Signup from "./Authentication/Signup";
 import ResetPassword from "./Authentication/ResetPassword";
 import VerifyEmail from "./Authentication/VerifyEmail";
+import GiveItemForm from "./Pages/Main/Dashboard/Give";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotpassword" element={<ResetPassword />} />
           <Route path="/verifyemail" element={<VerifyEmail />} />
+          <Route path="/give" element={<GiveItemForm />} />
       </Routes>
     </ThemeProvider>
   );

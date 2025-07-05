@@ -213,7 +213,7 @@ const Signup = () => {
 
           <div className="flex justify-between items-center align-middle my-5">
             <div className="h-[0.5px] w-[30%] bg-black dark:bg-white" />
-            <p className="text-xs text-center w-[40%]">Or continue with</p>
+            <p className="text-xs text-center w-[40%]">Or</p>
             <div className="h-[0.5px] w-[30%] bg-black dark:bg-white" />
           </div>
           <div className="flex justify-center items-center gap-4">
