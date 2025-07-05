@@ -1,8 +1,11 @@
+import React, { useState, useEffect } from "react";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import {
   HandHeart,
 } from "lucide-react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../Authentication/Firebase";
 
 const Sidebar = ({
   isCollapsed,
@@ -10,6 +13,22 @@ const Sidebar = ({
   handleSelectedMenu,
   MenuLinks,
 }) => {
+  const [userData, setUserData] = useState({ username: "", email: "" });
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const { username = "", email = "" } = userDoc.data();
+        setUserData({ username, email });
+      }
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
   return (
     // sidebar for dashboard page
     <aside
@@ -75,7 +94,7 @@ const Sidebar = ({
             isCollapsed ? "ml-2" : ""
           } h-10 w-10 bg-gradient-to-r from-blue-400 to-green-400 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center text-white transition-all duration-500`}
         >
-          AP
+          {userData.username?.[0]?.toUpperCase() || "U"}
         </div>
 
         <div
@@ -83,13 +102,13 @@ const Sidebar = ({
             isCollapsed ? "text-[0px]" : ""
           } transition-all duration-500`}
         >
-          <p className={`font-semibold`}>Aniyajuwon Pelumi</p>
+          <p className="font-semibold">{userData.username || "User"}</p>
           <a
             className={`${
               isCollapsed ? "text-[0px]" : "text-xs"
             } font-light transition-all duration-500`}
           >
-            adewumime@gmail.com
+            {userData.email || "user@gmail.com"}
           </a>
         </div>
       </div>

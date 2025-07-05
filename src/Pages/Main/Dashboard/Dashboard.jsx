@@ -1,12 +1,16 @@
 import { Gift, Users, Heart, TrendingUp, Package, Eye, MapPin, Calendar } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
 
 const Dashboard = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const giftItems = [
+  const [user, setUser] = useState(null);
+  const [isVerified, setIsVerified] = useState(false);
+  const navigate = useNavigate();
+
+
+  const stats = [
     {
       id: 1,
       title: "Vintage Coffee Table",
@@ -104,6 +108,49 @@ const Dashboard = () => {
       date: "3 days ago",
     },
   ];
+
+  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        if (user.emailVerified) {
+          setIsVerified(true);
+        } else {
+          toast.error("Please verify your email before proceeding.", {
+            position: "top-center",
+          });
+          navigate("/verifyemail"); // Redirect to a verification page
+        }
+        try {
+          // 🔍 Debugging: Log the auth user before fetching Firestore data
+          console.log("Auth user:", user);
+
+          // Fetch additional user data from Firestore
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            console.log("Firestore user data:", userData);
+
+            setUser({ uid: user.uid, email: user.email, ...userData });
+            setIsVerified(true);
+          } else {
+            console.warn("User data not found in Firestore!");
+            toast.error("User data not found in Firestore.");
+            setUser({ uid: user.uid, email: user.email }); // Fallback
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        navigate("/login"); // Redirect if no user is signed in
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);

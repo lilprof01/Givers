@@ -1,5 +1,6 @@
 import { Gift, Users } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -17,12 +18,12 @@ const Hero = () => {
           meaningful.
         </p>
         <div className="flex space-x-4">
-          <button className="px-6 py-3 bg-gradient-to-br from-blue-400 to-blue-700 text-white rounded-full hover:scale-105 transition-all duration-300 cursor-pointer font-semibold">
+          <Link to="/signup" className="px-6 py-3 bg-gradient-to-br from-blue-400 to-blue-700 text-white rounded-full hover:scale-105 transition-all duration-300 cursor-pointer font-semibold">
             Start Giving
-          </button>
-          <button className="px-6 py-3 border-2 border-green-600 text-green-600 rounded-full hover:scale-105 hover:bg-green-600 hover:text-white transition-all duration-400 cursor-pointer font-semibold">
+          </Link>
+          <Link to="/signup" className="px-6 py-3 border-2 border-green-600 text-green-600 rounded-full hover:scale-105 hover:bg-green-600 hover:text-white transition-all duration-400 cursor-pointer font-semibold">
             Find Item
-          </button>
+          </Link>
         </div>
         <div></div>
         <div className="flex flex-col lg:flex-row items-center justify-center mt-12">

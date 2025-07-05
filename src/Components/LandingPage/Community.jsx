@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const Community = () => {
   const testimonials = [
@@ -64,12 +65,12 @@ const Community = () => {
               Start your journey of giving and receiving today. Build connections, reduce waste, and make a positive impact in your community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
+              <Link to="/signup" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
                 Get Started Now
-              </button>
-              <button className="border-2 dark:border-gray-300 hover:bg-black dark:hover:bg-gray-50 hover:text-gray-200 dark:hover:text-gray-900 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
+              </Link>
+              <Link to="/#" className="border-2 dark:border-gray-300 hover:bg-black dark:hover:bg-gray-50 hover:text-gray-200 dark:hover:text-gray-900 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
                 Learn More
-              </button>
+              </Link>
             </div>
           </div>
         </div>
