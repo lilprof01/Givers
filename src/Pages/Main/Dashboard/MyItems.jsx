@@ -1,6 +1,7 @@
 
 import { Package, Gift, Plus, Calendar, MapPin, User, Heart, Eye } from "lucide-react";
 import { useState } from "react";
+import { Link, Navigate } from "react-router";
 
 const MyItems = () => {
   // Mock data for user's posted items
@@ -69,10 +70,10 @@ const MyItems = () => {
           <div>
             <h2 className="text-2xl font-bold mb-2">My Items 📦</h2>
             <p className="opacity-70 mb-4">Manage your posted items and view your received gifts.</p>
-            <button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white rounded-full flex items-center gap-2 px-4 py-2 cursor-pointer">
+            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white rounded-full flex items-center gap-2 px-4 py-2 cursor-pointer w-fit">
               <Plus className="w-4 h-4 mr-2" />
               Post New Item
-            </button>
+            </Link>
           </div>
           <div className="hidden lg:block">
             <div className="w-32 h-32 bg-gradient-to-r from-blue-200 to-green-200 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center">
@@ -141,10 +142,10 @@ const MyItems = () => {
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">No items posted yet</h3>
               <p className="text-gray-600 mb-4">Start sharing items with your community!</p>
-              <button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white rounded-full">
+              <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white rounded-full">
                 <Plus className="w-4 h-4 mr-2" />
                 Post Your First Item
-              </button>
+              </Link>
             </div>
           )}
         </div>

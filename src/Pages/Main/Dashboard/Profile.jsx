@@ -134,10 +134,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
             <div className="w-32 h-32 border-4 rounded-full border-white shadow-lg overflow-hidden">
               {/* <img src={img} alt="Profile" className="h-full w-full" /> */}
               <div className="h-full w-full flex justify-center items-center text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-blue-500 to-green-500 text-white">
-                {profile.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+                {userData.username?.[0]?.toUpperCase() || "U"}
               </div>
             </div>
             <button
@@ -199,17 +196,15 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
               </div>
             ) : (
               <div className="space-y-3">
-                <h1 className="text-3xl font-bold">
-                  {profile.name}
-                </h1>
+                <h1 className="text-3xl font-bold">{userData.name}</h1>
                 <div className="flex flex-wrap gap-4 opacity-80">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    <span>{profile.email}</span>
+                    <span>{userData.email}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
-                    <span>{profile.location}</span>
+                    <span>{userData.address}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
@@ -257,9 +252,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <p className="text-sm font-medium">
-                Verified Member
-              </p>
+              <p className="text-sm font-medium">Verified Member</p>
               <p className="text-xs opacity-80">Trust Score: 98%</p>
             </div>
           </div>
@@ -276,9 +269,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-2xl font-bold">
-                    {stat.value}
-                  </p>
+                  <p className="text-2xl font-bold">{stat.value}</p>
                   <p className="text-sm opacity-90">{stat.label}</p>
                 </div>
                 <stat.icon className={`w-8 h-8 ${stat.color}`} />

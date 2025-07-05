@@ -1,11 +1,12 @@
 import {
   Gift,
   MapPin,
-  Calendar, // only the ones you actually use
+  Calendar,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../Authentication/Firebase";
 import {
   collection,
@@ -25,105 +26,21 @@ const Dashboard = () => {
   const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
   const [giftItems, setGiftItems] = useState([]);
-
-  // const giftItems = [
-  //   {
-  //     id: 1,
-  //     title: "Vintage Coffee Table",
-  //     description: "Beautiful mahogany coffee table in excellent condition",
-  //     image: "📦",
-  //     location: "Downtown, City Center",
-  //     condition: "Excellent",
-  //     giver: "Sarah Johnson",
-  //     datePosted: "2 hours ago",
-  //     category: "Furniture",
-  //     fullDescription: "This is a beautiful vintage mahogany coffee table that has been in my family for years. It's in excellent condition with minor wear that adds to its character. Perfect for a living room or study area."
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Children's Books Set",
-  //     description: "Collection of 20 children's books, ages 3-8",
-  //     image: "📚",
-  //     location: "Westside, Green Valley",
-  //     condition: "Good",
-  //     giver: "Mike Chen",
-  //     datePosted: "1 day ago",
-  //     category: "Books",
-  //     fullDescription: "A wonderful collection of children's books including classic stories and educational books. Great for young readers ages 3-8. Some books show gentle use but all are in good readable condition."
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Kitchen Appliances",
-  //     description: "Blender, toaster, and coffee maker set",
-  //     image: "🍳",
-  //     location: "Eastside, Oak Hills",
-  //     condition: "Very Good",
-  //     giver: "Lisa Rodriguez",
-  //     datePosted: "3 days ago",
-  //     category: "Appliances",
-  //     fullDescription: "A complete set of kitchen appliances including a high-powered blender, 4-slice toaster, and programmable coffee maker. All items work perfectly and have been well-maintained."
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Winter Clothing",
-  //     description: "Coats, sweaters, and warm accessories",
-  //     image: "🧥",
-  //     location: "Central District",
-  //     condition: "Good",
-  //     giver: "David Kim",
-  //     datePosted: "5 days ago",
-  //     category: "Clothing",
-  //     fullDescription: "Warm winter clothing including 3 coats (sizes M-L), several sweaters, scarves, and gloves. All items are clean and in good condition. Perfect for someone in need of warm clothing."
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Exercise Equipment",
-  //     description: "Yoga mats, dumbbells, and resistance bands",
-  //     image: "🏋️",
-  //     location: "Northside, Pine Ridge",
-  //     condition: "Excellent",
-  //     giver: "Jennifer Wang",
-  //     datePosted: "1 week ago",
-  //     category: "Sports",
-  //     fullDescription: "Complete home workout set including 2 yoga mats, adjustable dumbbells (5-25 lbs), resistance bands, and exercise ball. Everything is in excellent condition and barely used."
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Art Supplies",
-  //     description: "Paints, brushes, canvases, and drawing materials",
-  //     image: "🎨",
-  //     location: "Arts District",
-  //     condition: "Very Good",
-  //     giver: "Alex Thompson",
-  //     datePosted: "1 week ago",
-  //     category: "Art",
-  //     fullDescription: "Professional art supplies including acrylic paints, various brushes, stretched canvases, sketchbooks, and drawing pencils. Great for an aspiring artist or art student."
-  //   }
-  // ];
-
-  // const recentItems = [
-  //   {
-  //     id: 1,
-  //     title: "Vintage Coffee Table",
-  //     status: "Available",
-  //     image: "📦",
-  //     date: "2 hours ago",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Children's Books Set",
-  //     status: "Given",
-  //     image: "📚",
-  //     date: "1 day ago",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Kitchen Appliances",
-  //     status: "Given",
-  //     image: "🍳",
-  //     date: "3 days ago",
-  //   },
-  // ];
+  const [userData, setUserData] = useState({ username: "", email: "" });
+  
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const { username = "", email = "" } = userDoc.data();
+            setUserData({ username, email });
+          }
+        }
+      });
+  
+      return () => unsubscribe();
+    }, []);
 
   useEffect(() => {
     // live query: all items with itemStatus == "available", newest first
@@ -218,12 +135,12 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold mb-2">
-              Welcome back, {user?.username || "friend"}! 👋
+              Welcome back, {userData?.username}! 👋
             </h2>
             <p className="opacity-70 mb-4">
               You've made a positive impact in your community. Keep giving!
             </p>
-            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full px-4 py-2 cursor-pointer">
+            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full p-3 cursor-pointer">
               Share New Item
             </Link>
           </div>

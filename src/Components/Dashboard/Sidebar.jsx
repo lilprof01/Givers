@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
-import {
-  HandHeart,
-} from "lucide-react";
+import { HandHeart } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../Authentication/Firebase";
 import { doc, getDoc } from "firebase/firestore";
-
 
 const Sidebar = ({
   isCollapsed,
@@ -17,19 +14,19 @@ const Sidebar = ({
 }) => {
   const [userData, setUserData] = useState({ username: "", email: "" });
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        const { username = "", email = "" } = userDoc.data();
-        setUserData({ username, email });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const { username = "", email = "" } = userDoc.data();
+          setUserData({ username, email });
+        }
       }
-    }
-  });
+    });
 
-  return () => unsubscribe();
-}, []);
+    return () => unsubscribe();
+  }, []);
 
   return (
     // sidebar for dashboard page
