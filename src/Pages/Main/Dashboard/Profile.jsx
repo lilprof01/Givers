@@ -12,48 +12,18 @@ import {
   Save,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../../../Authentication/Firebase";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
 import img from "/assets/images/giveHeart.jpg";
+import { useEffect, useState } from "react";
+import { auth, db } from "../../../Authentication/Firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "Aniyajuwon Pelumi",
-    email: "john@example.com",
-    location: "Akobo Ibadan, OY",
-    bio: "Passionate about sustainable living and community sharing. Love connecting with neighbors and making a positive impact.",
-    joinDate: "June 2025",
-    phone: "+1 (555) 123-4567",
-  });
-
+  const [profile, setProfile] = useState(null);
   const [editedProfile, setEditedProfile] = useState(profile);
 
   const [userData, setUserData] = useState({ username: "", email: "" });
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          const { username = "", email = "" } = userDoc.data();
-          setUserData({ username, email });
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleSave = () => {
-    setProfile(editedProfile);
-    setIsEditing(false);
-  };
 
   const handleCancel = () => {
     setEditedProfile(profile);
