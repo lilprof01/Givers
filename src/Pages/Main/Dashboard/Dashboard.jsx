@@ -1,114 +1,153 @@
-import { Gift, Users, Heart, TrendingUp, Package, Eye, MapPin, Calendar } from "lucide-react";
+import {
+  Gift, MapPin, Calendar             // only the ones you actually use
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
+import { auth, db } from "../../../Authentication/Firebase";
+import {
+  collection, query, where, orderBy, onSnapshot, doc, getDoc
+} from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
+
 
 const Dashboard = () => {
-
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [user, setUser] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
+  const [giftItems, setGiftItems] = useState([]);
 
 
-  const stats = [
-    {
-      id: 1,
-      title: "Vintage Coffee Table",
-      description: "Beautiful mahogany coffee table in excellent condition",
-      image: "📦",
-      location: "Downtown, City Center",
-      condition: "Excellent",
-      giver: "Sarah Johnson",
-      datePosted: "2 hours ago",
-      category: "Furniture",
-      fullDescription: "This is a beautiful vintage mahogany coffee table that has been in my family for years. It's in excellent condition with minor wear that adds to its character. Perfect for a living room or study area."
-    },
-    {
-      id: 2,
-      title: "Children's Books Set",
-      description: "Collection of 20 children's books, ages 3-8",
-      image: "📚",
-      location: "Westside, Green Valley",
-      condition: "Good",
-      giver: "Mike Chen",
-      datePosted: "1 day ago",
-      category: "Books",
-      fullDescription: "A wonderful collection of children's books including classic stories and educational books. Great for young readers ages 3-8. Some books show gentle use but all are in good readable condition."
-    },
-    {
-      id: 3,
-      title: "Kitchen Appliances",
-      description: "Blender, toaster, and coffee maker set",
-      image: "🍳",
-      location: "Eastside, Oak Hills",
-      condition: "Very Good",
-      giver: "Lisa Rodriguez",
-      datePosted: "3 days ago",
-      category: "Appliances",
-      fullDescription: "A complete set of kitchen appliances including a high-powered blender, 4-slice toaster, and programmable coffee maker. All items work perfectly and have been well-maintained."
-    },
-    {
-      id: 4,
-      title: "Winter Clothing",
-      description: "Coats, sweaters, and warm accessories",
-      image: "🧥",
-      location: "Central District",
-      condition: "Good",
-      giver: "David Kim",
-      datePosted: "5 days ago",
-      category: "Clothing",
-      fullDescription: "Warm winter clothing including 3 coats (sizes M-L), several sweaters, scarves, and gloves. All items are clean and in good condition. Perfect for someone in need of warm clothing."
-    },
-    {
-      id: 5,
-      title: "Exercise Equipment",
-      description: "Yoga mats, dumbbells, and resistance bands",
-      image: "🏋️",
-      location: "Northside, Pine Ridge",
-      condition: "Excellent",
-      giver: "Jennifer Wang",
-      datePosted: "1 week ago",
-      category: "Sports",
-      fullDescription: "Complete home workout set including 2 yoga mats, adjustable dumbbells (5-25 lbs), resistance bands, and exercise ball. Everything is in excellent condition and barely used."
-    },
-    {
-      id: 6,
-      title: "Art Supplies",
-      description: "Paints, brushes, canvases, and drawing materials",
-      image: "🎨",
-      location: "Arts District",
-      condition: "Very Good",
-      giver: "Alex Thompson",
-      datePosted: "1 week ago",
-      category: "Art",
-      fullDescription: "Professional art supplies including acrylic paints, various brushes, stretched canvases, sketchbooks, and drawing pencils. Great for an aspiring artist or art student."
-    }
-  ];
+  // const giftItems = [
+  //   {
+  //     id: 1,
+  //     title: "Vintage Coffee Table",
+  //     description: "Beautiful mahogany coffee table in excellent condition",
+  //     image: "📦",
+  //     location: "Downtown, City Center",
+  //     condition: "Excellent",
+  //     giver: "Sarah Johnson",
+  //     datePosted: "2 hours ago",
+  //     category: "Furniture",
+  //     fullDescription: "This is a beautiful vintage mahogany coffee table that has been in my family for years. It's in excellent condition with minor wear that adds to its character. Perfect for a living room or study area."
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Children's Books Set",
+  //     description: "Collection of 20 children's books, ages 3-8",
+  //     image: "📚",
+  //     location: "Westside, Green Valley",
+  //     condition: "Good",
+  //     giver: "Mike Chen",
+  //     datePosted: "1 day ago",
+  //     category: "Books",
+  //     fullDescription: "A wonderful collection of children's books including classic stories and educational books. Great for young readers ages 3-8. Some books show gentle use but all are in good readable condition."
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Kitchen Appliances",
+  //     description: "Blender, toaster, and coffee maker set",
+  //     image: "🍳",
+  //     location: "Eastside, Oak Hills",
+  //     condition: "Very Good",
+  //     giver: "Lisa Rodriguez",
+  //     datePosted: "3 days ago",
+  //     category: "Appliances",
+  //     fullDescription: "A complete set of kitchen appliances including a high-powered blender, 4-slice toaster, and programmable coffee maker. All items work perfectly and have been well-maintained."
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Winter Clothing",
+  //     description: "Coats, sweaters, and warm accessories",
+  //     image: "🧥",
+  //     location: "Central District",
+  //     condition: "Good",
+  //     giver: "David Kim",
+  //     datePosted: "5 days ago",
+  //     category: "Clothing",
+  //     fullDescription: "Warm winter clothing including 3 coats (sizes M-L), several sweaters, scarves, and gloves. All items are clean and in good condition. Perfect for someone in need of warm clothing."
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Exercise Equipment",
+  //     description: "Yoga mats, dumbbells, and resistance bands",
+  //     image: "🏋️",
+  //     location: "Northside, Pine Ridge",
+  //     condition: "Excellent",
+  //     giver: "Jennifer Wang",
+  //     datePosted: "1 week ago",
+  //     category: "Sports",
+  //     fullDescription: "Complete home workout set including 2 yoga mats, adjustable dumbbells (5-25 lbs), resistance bands, and exercise ball. Everything is in excellent condition and barely used."
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Art Supplies",
+  //     description: "Paints, brushes, canvases, and drawing materials",
+  //     image: "🎨",
+  //     location: "Arts District",
+  //     condition: "Very Good",
+  //     giver: "Alex Thompson",
+  //     datePosted: "1 week ago",
+  //     category: "Art",
+  //     fullDescription: "Professional art supplies including acrylic paints, various brushes, stretched canvases, sketchbooks, and drawing pencils. Great for an aspiring artist or art student."
+  //   }
+  // ];
 
-  const recentItems = [
-    {
-      id: 1,
-      title: "Vintage Coffee Table",
-      status: "Available",
-      image: "📦",
-      date: "2 hours ago",
-    },
-    {
-      id: 2,
-      title: "Children's Books Set",
-      status: "Given",
-      image: "📚",
-      date: "1 day ago",
-    },
-    {
-      id: 3,
-      title: "Kitchen Appliances",
-      status: "Given",
-      image: "🍳",
-      date: "3 days ago",
-    },
-  ];
+  // const recentItems = [
+  //   {
+  //     id: 1,
+  //     title: "Vintage Coffee Table",
+  //     status: "Available",
+  //     image: "📦",
+  //     date: "2 hours ago",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Children's Books Set",
+  //     status: "Given",
+  //     image: "📚",
+  //     date: "1 day ago",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Kitchen Appliances",
+  //     status: "Given",
+  //     image: "🍳",
+  //     date: "3 days ago",
+  //   },
+  // ];
 
+  useEffect(() => {
+  // live query: all items with itemStatus == "available", newest first
+  const q = query(
+    collection(db, "give"),
+    where("itemStatus", "==", "available"),
+    orderBy("createdAt", "desc")
+  );
+
+  const unsub = onSnapshot(q, (snap) => {
+    const docs = snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        title: data.itemName,
+        description: data.description,
+        image: data.photoURL,                       // 👉 use emoji fallback or data.photoURL
+        location: data.location,
+        condition: data.itemStatus,       // or another field if you store “condition”
+        giver: data.giverName,
+        datePosted: formatDistanceToNow(data.createdAt?.toDate?.() || new Date(), { addSuffix: true }),
+        category: data.category,
+        fullDescription: data.description // you might store a longer field
+      };
+    });
+    setGiftItems(docs);
+  });
+
+  return () => unsub();
+}, []);
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -169,7 +208,7 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold mb-2">
-              Welcome back, Pelumi! 👋
+              Welcome back, {user?.username || "friend"}! 👋
             </h2>
             <p className="opacity-70 mb-4">
               You've made a positive impact in your community. Keep giving!
@@ -202,7 +241,11 @@ const Dashboard = () => {
                 onClick={() => handleItemClick(item)}
               >
                 <div className="text-center mb-3">
-                  <div className="text-7xl mb-3">{item.image}</div>
+                  {item.image.startsWith("http") ? (
+<img src={item.image} alt={item.title} className="w-28 h-28 object-cover rounded mx-auto mb-3" />
+ ) : (
+ <div className="text-7xl mb-3">{item.image}</div>
+)}
                   <h3 className="font-semibold mb-1">{item.title}</h3>
                   <p className="text-sm opacity-70 mb-2 line-clamp-1">{item.description}</p>
                 </div>

@@ -6,6 +6,8 @@ import {
 } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../Authentication/Firebase";
+import { doc, getDoc } from "firebase/firestore";
+
 
 const Sidebar = ({
   isCollapsed,
