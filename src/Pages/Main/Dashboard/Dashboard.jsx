@@ -1,24 +1,30 @@
 import {
-  Gift, MapPin, Calendar             // only the ones you actually use
+  Gift,
+  MapPin,
+  Calendar, // only the ones you actually use
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
 import { auth, db } from "../../../Authentication/Firebase";
 import {
-  collection, query, where, orderBy, onSnapshot, doc, getDoc
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
-
 const Dashboard = () => {
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
   const [giftItems, setGiftItems] = useState([]);
-
 
   // const giftItems = [
   //   {
@@ -120,35 +126,38 @@ const Dashboard = () => {
   // ];
 
   useEffect(() => {
-  // live query: all items with itemStatus == "available", newest first
-  const q = query(
-    collection(db, "give"),
-    where("itemStatus", "==", "available"),
-    orderBy("createdAt", "desc")
-  );
+    // live query: all items with itemStatus == "available", newest first
+    const q = query(
+      collection(db, "give"),
+      where("itemStatus", "==", "available"),
+      orderBy("createdAt", "desc")
+    );
 
-  const unsub = onSnapshot(q, (snap) => {
-    const docs = snap.docs.map((d) => {
-      const data = d.data();
-      return {
-        id: d.id,
-        title: data.itemName,
-        description: data.description,
-        image: data.photoURL,                       // 👉 use emoji fallback or data.photoURL
-        location: data.location,
-        condition: data.itemStatus,       // or another field if you store “condition”
-        giver: data.giverName,
-        datePosted: formatDistanceToNow(data.createdAt?.toDate?.() || new Date(), { addSuffix: true }),
-        category: data.category,
-        fullDescription: data.description // you might store a longer field
-      };
+    const unsub = onSnapshot(q, (snap) => {
+      const docs = snap.docs.map((d) => {
+        const data = d.data();
+        return {
+          id: d.id,
+          title: data.itemName,
+          description: data.description,
+          image: data.photoURL, // 👉 use emoji fallback or data.photoURL
+          location: data.location,
+          condition: data.itemStatus, // or another field if you store “condition”
+          giver: data.giverName,
+          datePosted: formatDistanceToNow(
+            data.createdAt?.toDate?.() || new Date(),
+            { addSuffix: true }
+          ),
+          category: data.category,
+          fullDescription: data.description, // you might store a longer field
+        };
+      });
+      setGiftItems(docs);
     });
-    setGiftItems(docs);
-  });
 
-  return () => unsub();
-}, []);
-  
+    return () => unsub();
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -235,19 +244,25 @@ const Dashboard = () => {
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {giftItems.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="bg-gray-50 dark:bg-black/20 rounded-xl p-4 hover:bg-gray-100 dark:hover:bg-gray-900/20 transition-colors duration-200 cursor-pointer border border-gray-200 dark:border-gray-800"
                 onClick={() => handleItemClick(item)}
               >
                 <div className="text-center mb-3">
                   {item.image.startsWith("http") ? (
-<img src={item.image} alt={item.title} className="w-28 h-28 object-cover rounded mx-auto mb-3" />
- ) : (
- <div className="text-7xl mb-3">{item.image}</div>
-)}
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-28 h-28 object-cover rounded mx-auto mb-3"
+                    />
+                  ) : (
+                    <div className="text-7xl mb-3">{item.image}</div>
+                  )}
                   <h3 className="font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm opacity-70 mb-2 line-clamp-1">{item.description}</p>
+                  <p className="text-sm opacity-70 mb-2 line-clamp-1">
+                    {item.description}
+                  </p>
                 </div>
                 <div className="space-y-1 text-xs opacity-50">
                   <div className="flex items-center gap-1">
@@ -273,7 +288,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <ItemPopUp 
+      <ItemPopUp
         item={selectedItem}
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}

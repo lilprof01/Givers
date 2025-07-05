@@ -14,7 +14,17 @@ const ItemPopUp = ({ item, isOpen, onClose }) => {
       <div className="sm:max-w-md w-[85vw]">
         <div>
           <div className="text-center mb-4">
-            <div className="text-6xl mb-4">{item.image}</div>
+            <div className="text-6xl mb-4">
+              {item.image.startsWith("http") ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-28 h-28 object-cover rounded mx-auto mb-3"
+                />
+              ) : (
+                <div className="text-7xl mb-3">{item.image}</div>
+              )}
+            </div>
             <div className="text-xl font-bold">{item.title}</div>
             <div className="opacity-80 mt-2">{item.description}</div>
           </div>
@@ -53,7 +63,10 @@ const ItemPopUp = ({ item, isOpen, onClose }) => {
         </div>
 
         <div className="flex gap-3 mt-5">
-          <button onClick={onClose} className="flex-1 border border-gray-600 dark:border-gray-300 dark:hover:bg-gray-300 hover:bg-gray-600 hover:text-white dark:hover:text-red-600 rounded-lg cursor-pointer transition-all duration-150">
+          <button
+            onClick={onClose}
+            className="flex-1 border border-gray-600 dark:border-gray-300 dark:hover:bg-gray-300 hover:bg-gray-600 hover:text-white dark:hover:text-red-600 rounded-lg cursor-pointer transition-all duration-150"
+          >
             Close
           </button>
           <button
