@@ -1,10 +1,90 @@
 import { Calendar, Check, Heart, MapPin, Package } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { auth, db } from "../../Authentication/Firebase";
+import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
 
 const ItemPopUp = ({ item, isOpen, onClose }) => {
-  if (!item) return null;
   const [request, setRequest] = useState(false);
+  const [reason, setReason] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const fbUser = auth.currentUser;
+      if (!fbUser) return;
+      const snap = await getDoc(doc(db, "users", fbUser.uid));
+      if (snap.exists()) {
+        const { username = "" } = snap.data();
+        setCurrentUser({
+          uid: fbUser.uid,
+          username,
+          email: fbUser.email,
+        });
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleSendRequest = async () => {
+    // if (!currentUser || !item?.id || !reason.trim()) {
+      // console.error("Error:", err)
+    //   toast.error("All fields required");
+    //   return;
+    // }
+    if (!currentUser) {
+  console.error("❌ currentUser is missing");
+  toast.error("User not logged in");
+  return;
+}
+if (!item?.id) {
+  console.error("❌ item.id is missing");
+  toast.error("Invalid item data");
+  return;
+}
+if (!reason.trim()) {
+  console.error("❌ Reason is empty");
+  toast.error("Please enter your reason");
+  return;
+}
+
+
+    try {
+      // Add to requests collection
+      await addDoc(collection(db, "requests"), {
+        itemId: item.id,
+        itemTitle: item.title,
+        giverId: item.giverId,
+        requesterId: currentUser.uid,
+        requesterName: currentUser.username,
+        message: reason,
+        status: "pending",
+        createdAt: serverTimestamp(),
+      });
+
+      // Optional: Add a notification for the giver
+      await addDoc(collection(db, "notifications"), {
+        userId: item.giverId,
+        type: "request",
+        requesterId: currentUser.uid,
+        requesterName: currentUser.username,
+        itemId: item.id,
+        itemTitle: item.title,
+        status: "unread",
+        createdAt: serverTimestamp(),
+      });
+
+      toast.success("Request sent successfully!");
+      setRequest(false);
+      setReason("");
+      onClose();
+    } catch (err) {
+      console.error("Failed to send request:", err);
+      toast.error("Something went wrong!");
+    }
+  };
+
+  if (!item) return null;
 
   return (
     <div
@@ -16,41 +96,38 @@ const ItemPopUp = ({ item, isOpen, onClose }) => {
     >
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="sm:max-w-md w-[85vw]">
-        <div>
-          <div className="text-center mb-4">
-            <div className="text-6xl mb-4">
-              {item.image.startsWith("http") ? (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-28 h-28 object-cover rounded mx-auto mb-3"
-                />
-              ) : (
-                <div className="text-7xl mb-3">{item.image}</div>
-              )}
-            </div>
-            <div className="text-xl font-bold">{item.title}</div>
+        <div className="text-center mb-4">
+          <div className="text-6xl mb-4">
+            {item.image?.startsWith("http") ? (
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-28 h-28 object-cover rounded mx-auto mb-3"
+              />
+            ) : (
+              <div className="text-7xl mb-3">{item.image}</div>
+            )}
           </div>
+          <div className="text-xl font-bold">{item.title}</div>
         </div>
 
         {request ? (
           <div>
-            <p>Reason for requesting:</p>
+            <p className="mb-2">Reason for requesting:</p>
             <textarea
-              placeholder="let the giver know your reason for requesting"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Let the giver know why you're requesting this item..."
               rows={3}
               className="resize-none border p-2 rounded-lg w-full"
             />
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Full Description */}
             <div className="rounded-lg p-4">
               <h4 className="font-semibold mb-2">Description</h4>
               <p className="text-sm">{item.fullDescription}</p>
             </div>
-
-            {/* Item Details */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-3 flex flex-col">
                 <div className="flex items-center gap-2 text-sm">
@@ -85,9 +162,7 @@ const ItemPopUp = ({ item, isOpen, onClose }) => {
           </button>
           {request ? (
             <button
-              onClick={() => {
-                toast.success('Request sent succesfully')
-                setRequest(false)}}
+              onClick={handleSendRequest}
               className="flex-1 flex items-center justify-center p-3 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white cursor-pointer transition-all duration-300"
             >
               Send Request
