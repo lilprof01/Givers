@@ -1,5 +1,6 @@
 import { Gift, Users, Heart, TrendingUp, Package, Eye, MapPin, Calendar } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
 
 const Dashboard = () => {
