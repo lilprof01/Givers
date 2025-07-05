@@ -4,7 +4,7 @@ import {
   Calendar, // only the ones you actually use
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
 import { auth, db } from "../../../Authentication/Firebase";
 import {
@@ -222,9 +222,9 @@ const Dashboard = () => {
             <p className="opacity-70 mb-4">
               You've made a positive impact in your community. Keep giving!
             </p>
-            <button className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full px-4 py-2 cursor-pointer">
+            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full px-4 py-2 cursor-pointer">
               Share New Item
-            </button>
+            </Link>
           </div>
           <div className="hidden lg:block">
             <div className="w-32 h-32 bg-gradient-to-r from-blue-200 to-green-200 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center">
