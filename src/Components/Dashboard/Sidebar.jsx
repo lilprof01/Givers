@@ -50,7 +50,7 @@ useEffect(() => {
             <div
               className={`${
                 isCollapsed ? "ml-2" : ""
-              } inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-xl mr-2 transition-all duration-500`}
+              } flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-xl mr-2 transition-all duration-500`}
             >
               <HandHeart className="text-white" />
             </div>

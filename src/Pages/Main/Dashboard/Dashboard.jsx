@@ -4,7 +4,7 @@ import {
   Calendar, // only the ones you actually use
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
 import { auth, db } from "../../../Authentication/Firebase";
 import {
@@ -211,7 +211,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll">
+    <div className="p-6 space-y-6 pt-22 sm:pt-10 sm:mt-0 overflow-y-scroll">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900 dark:to-green-900 text-gray-900 dark:text-gray-200 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
         <div className="flex items-center justify-between">
@@ -222,9 +222,9 @@ const Dashboard = () => {
             <p className="opacity-70 mb-4">
               You've made a positive impact in your community. Keep giving!
             </p>
-            <button className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full px-4 py-2 cursor-pointer">
+            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full px-4 py-2 cursor-pointer">
               Share New Item
-            </button>
+            </Link>
           </div>
           <div className="hidden lg:block">
             <div className="w-32 h-32 bg-gradient-to-r from-blue-200 to-green-200 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center">
