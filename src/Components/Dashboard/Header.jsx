@@ -70,12 +70,7 @@ useEffect(() => {
         <Link to="/give" className="sm:flex justify-center items-center align-middle gap-3 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 cursor-pointer px-4 py-2 rounded-full text-white font-semibold hidden">
           <Plus size={18} />
           Give Item
-        </Link>
-        <div><Bell /></div>
-        <div className="h-10 w-10 bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 rounded-full flex items-center justify-center text-white">
-        
-          {userData.username?.[0]?.toUpperCase() || "U"}
-        </div>
+        </button>
       </div>
     </header>
   );

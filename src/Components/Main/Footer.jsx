@@ -1,6 +1,5 @@
 
 import { Users, Gift, HandHeart } from "lucide-react";
-import logo from "/assets/images/logo.png";
 
 const Footer = () => {
   const year = new Date();

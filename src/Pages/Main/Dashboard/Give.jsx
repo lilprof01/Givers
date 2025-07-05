@@ -7,11 +7,14 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { onAuthStateChanged } from "firebase/auth";
-// import { v4 as uuid } from "uuid";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Cloudinary } from '@cloudinary/url-gen';
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
+
 
 const GiveItemForm = () => {
   const [itemName, setItemName] = useState("");
@@ -72,18 +75,8 @@ const GiveItemForm = () => {
     if (submitting) return; // guard against double‑click
     setSubmitting(true);
 
-    // try {
-    //   let photoURL = "";
-
-    //   // 1. Upload image if user picked one
-    //   if (itemPhoto) {
-    //     const storageRef = ref(
-    //       storage,
-    //       `itemImages/${userData.uid}/${uuid()}-${itemPhoto.name}`
-    //     );
-    //     // await uploadBytes(storageRef, itemPhoto);
-    //     // photoURL = await getDownloadURL(storageRef);
-    //   }
+    try {
+      let photoURL = "";
 
       // 2. Write Firestore document
       await addDoc(collection(db, "give"), {
@@ -114,6 +107,16 @@ const GiveItemForm = () => {
       setSubmitting(false);
     }
   };
+
+  const cld = new Cloudinary({ cloud: { cloudName: 'dcmzckthf' } });
+  
+  // Use this sample image or upload your own via the Media Explorer
+  const img = cld
+        .image('cld-sample-5')
+        .format('auto') // Optimize delivery by resizing and applying auto-format and auto-quality
+        .quality('auto')
+        .resize(auto().gravity(autoGravity()).width(500).height(500)); // Transform the image: auto-crop to square aspect_ratio
+
 
   return (
     <div className="col-start-2 p-16 transition-all duration-300 flex flex-col justify-start items-center text-center align-middle gap-8 dark:bg-[#121212] mt-20 sm:mt-0">
@@ -213,11 +216,13 @@ const GiveItemForm = () => {
           </div>
           <div>
             <label className="block font-semibold mb-1">Item photo</label>
-            <input
+            {/* <input
               type="file"
               accept="image/*"
               onChange={(e) => setItemPhoto(e.target.files[0])}
-            />
+              
+            /> */}
+            <AdvancedImage cldImg={img}/>
           </div>
           {/* Submit */}
           <button
