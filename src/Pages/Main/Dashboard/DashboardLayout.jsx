@@ -8,6 +8,7 @@ import DarkModeToggle from "../../../Components/Ui/darkModeToggle";
 import Dashboard from "./Dashboard";
 import MyItems from "./MyItems";
 import Profile from "./Profile";
+import Notifications from "./Notifications";
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -64,6 +65,8 @@ const DashboardLayout = () => {
         return <MyItems />;
       case "profile":
         return <Profile />
+      case "notifications":
+        return <Notifications />
     }
   }
 
