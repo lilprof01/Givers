@@ -74,7 +74,7 @@ const DashboardLayout = () => {
     <main
       className={`flex flex-col sm:grid ${
         isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[220px_1fr]"
-      } grid-rows-[80px_1fr] h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
+      } grid-rows-[80px_1fr] sm:h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
     >
       <Sidebar
         isCollapsed={isCollapsed}

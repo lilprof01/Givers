@@ -32,7 +32,7 @@ const Sidebar = ({
     // sidebar for dashboard page
     <aside
       className={`bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 sm:flex flex-col justify-between pt-5 ${
-        window.innerWidth < 768 ? "fixed w-[250px] h-full z-[999]" : ""
+        window.innerWidth < 768 ? "fixed w-[250px] h-full z-[9999]" : ""
       } ${
         window.innerWidth < 768 && isCollapsed ? "-translate-x-[250px]" : ""
       }`}
