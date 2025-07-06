@@ -23,7 +23,66 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [editedProfile, setEditedProfile] = useState(profile);
 
-  const [userData, setUserData] = useState({ username: "", email: "" });
+useEffect(() => {
+  const fetchUser = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) {
+        const data = snap.data();
+        const userData = {
+          name: data.username || "Unnamed",
+          email: user.email,
+          location: data.address || "Not specified",
+          bio: data.bio || "",
+          phone: data.phone || "",
+          joinDate: new Date(user.metadata.creationTime).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+          }),
+        };
+        setProfile(userData);
+        setEditedProfile(userData);
+      }
+    }
+  };
+  fetchUser();
+}, []);
+
+const handleSave = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+  const ref = doc(db, "users", user.uid);
+
+  await updateDoc(ref, {
+    username: editedProfile.name,
+    location: editedProfile.location,
+    bio: editedProfile.bio,
+    phone: editedProfile.phone,
+  });
+
+  setProfile(editedProfile);
+  setIsEditing(false);
+};
+
+if (!profile) return <div className="p-6">Loading profile...</div>;
+
+
+  // const [profile, setProfile] = useState({
+  //   name: "Aniyajuwon Pelumi",
+  //   email: "john@example.com",
+  //   location: "Akobo Ibadan, OY",
+  //   bio: "Passionate about sustainable living and community sharing. Love connecting with neighbors and making a positive impact.",
+  //   joinDate: "June 2025",
+  //   phone: "+1 (555) 123-4567",
+  // });
+
+  
+
+  // const handleSave = () => {
+  //   setProfile(editedProfile);
+  //   setIsEditing(false);
+  // };
 
   const handleCancel = () => {
     setEditedProfile(profile);
