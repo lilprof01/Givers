@@ -22,7 +22,7 @@ const NotificationsPopup = ({
 
   return (
     <div className={`${isOpen ? 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : 'hidden'}`}>
-      <div className="max-w-2xl bg-gray-200/35 dark:bg-black/30 backdrop-blur-sm p-5 rounded-lg">
+      <div className="w-[90vw] sm:max-w-2xl bg-gray-200/35 dark:bg-black/30 backdrop-blur-sm p-5 rounded-lg">
         <div>
           <div className="flex items-center gap-3 text-xl">
             <NotificationIcon type={notification.type} />

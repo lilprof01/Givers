@@ -32,7 +32,7 @@ const Sidebar = ({
     // sidebar for dashboard page
     <aside
       className={`bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 sm:flex flex-col justify-between pt-5 ${
-        window.innerWidth < 768 ? "fixed w-[250px] h-full z-[9999]" : ""
+        window.innerWidth < 768 ? "fixed w-[250px] h-full z-[999]" : ""
       } ${
         window.innerWidth < 768 && isCollapsed ? "-translate-x-[250px]" : ""
       }`}
@@ -54,7 +54,7 @@ const Sidebar = ({
             <div className={``}>
               <h3
                 className={`${
-                  isCollapsed ? "text-[0px]" : "text-2xl"
+                  isCollapsed ? "text-[0px]" : "sm:text-2xl"
                 } font-bold bg-clip-text bg-gradient-to-r from-black dark:from-blue-500 via-blue-400 to-green-400 text-transparent transition-all duration-500`}
               >
                 Givers
