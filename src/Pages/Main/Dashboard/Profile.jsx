@@ -68,22 +68,6 @@ const handleSave = async () => {
 if (!profile) return <div className="p-6">Loading profile...</div>;
 
 
-  // const [profile, setProfile] = useState({
-  //   name: "Aniyajuwon Pelumi",
-  //   email: "john@example.com",
-  //   location: "Akobo Ibadan, OY",
-  //   bio: "Passionate about sustainable living and community sharing. Love connecting with neighbors and making a positive impact.",
-  //   joinDate: "June 2025",
-  //   phone: "+1 (555) 123-4567",
-  // });
-
-  
-
-  // const handleSave = () => {
-  //   setProfile(editedProfile);
-  //   setIsEditing(false);
-  // };
-
   const handleCancel = () => {
     setEditedProfile(profile);
     setIsEditing(false);
