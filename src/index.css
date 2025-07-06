@@ -4,10 +4,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-* {
-  font-family: 'Sour Gummy', sans-serif;
-}
 
 @theme {
   --font-sour-gummy: 'Sour Gummy', sans-serif;
+}
+
+html {
+  user-select: none;
 }
