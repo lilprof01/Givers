@@ -31,16 +31,16 @@ const Sidebar = ({
   return (
     // sidebar for dashboard page
     <aside
-      className={`bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 flex flex-col justify-between pt-5 ${
+      className={`bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 row-span-2 transition-all duration-300 flex flex-col justify-between pt-20 sm:pt-5 ${
         window.innerWidth < 768 ? "fixed w-[250px] h-full z-[999]" : ""
       } ${
         window.innerWidth < 768 && isCollapsed ? "-translate-x-[250px]" : ""
       }`}
     >
       <div
-        className={`flex ${
+        className={`sm:flex ${
           isCollapsed ? "" : ""
-        } items-center align-middle transition-all duration-300`}
+        } items-center align-middle transition-all duration-300 hidden`}
       >
         <Link to="/" className="mr-2 transition-all duration-300 ml-2">
           <div className="flex items-center mb-6">
