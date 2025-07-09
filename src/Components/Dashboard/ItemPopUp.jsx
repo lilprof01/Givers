@@ -43,7 +43,7 @@ if (!item?.id) {
   return;
 }
 if (!reason.trim()) {
-  console.error("❌ Reason is empty");
+  console.error("Reason is empty");
   toast.error("Please enter your reason");
   return;
 }
@@ -69,9 +69,17 @@ if (!reason.trim()) {
         requesterId: currentUser.uid,
         requesterName: currentUser.username,
         itemId: item.id,
+        description: `${currentUser.username} requested your ${item.title}`,
+        message: reason,
         itemTitle: item.title,
         status: "unread",
         createdAt: serverTimestamp(),
+        meta: {
+    requesterName: currentUser.username,
+    itemName: item.title,   
+    pickupTime: "Flexible",
+    duration: "2 weeks"
+  }
       });
 
       toast.success("Request sent successfully!");
