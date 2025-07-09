@@ -28,6 +28,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [giftItems, setGiftItems] = useState([]);
   const [userData, setUserData] = useState({ username: "", email: "" });
+
+  
   
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {

@@ -1,9 +1,16 @@
 import {
-  Bell, Check, Clock, Gift, MessageSquare, Star, Trash2
+  Bell,
+  Check,
+  Clock,
+  Gift,
+  MessageSquare,
+  Star,
+  Trash2,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { auth, db } from "../../../Authentication/Firebase";
+import { differenceInMinutes, isValid } from "date-fns";
 import {
   collection,
   query,
@@ -14,26 +21,37 @@ import {
   addDoc,
   doc,
   serverTimestamp,
+  orderBy,
 } from "firebase/firestore";
 import NotificationsPopup from "../../../Components/Notifications/NotificationsPopup";
 
 const getIcon = (type) => {
   const map = {
-    request:   <Gift className="w-5 h-5 text-blue-500" />,
-    approval:  <Check className="w-5 h-5 text-green-500" />,
-    message:   <MessageSquare className="w-5 h-5 text-purple-500" />,
-    reminder:  <Clock className="w-5 h-5 text-orange-500" />,
+    request: <Gift className="w-5 h-5 text-blue-500" />,
+    approval: <Check className="w-5 h-5 text-green-500" />,
+    message: <MessageSquare className="w-5 h-5 text-purple-500" />,
+    reminder: <Clock className="w-5 h-5 text-orange-500" />,
     achievement: <Star className="w-5 h-5 text-yellow-500" />,
   };
   return map[type] || <Bell className="w-5 h-5 text-gray-500" />;
 };
+function timeAgo(ts) {
+  if (!ts) return "";
+  const date = ts.toDate ? ts.toDate() : new Date(ts);
+  if (!isValid(date)) return "";
+  const mins = differenceInMinutes(new Date(), date);
+  if (mins < 1)  return "Just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  const rem = mins % 60;
+  return rem === 0 ? `${hrs}h ago` : `${hrs}h ${rem}m ago`;
+}
 
 export const Notifications = () => {
-  const [notifications, setNotifications]   = useState([]);
-  const [selected, setSelected]             = useState(null);
-  const [selectedNotification, setSelectedNotification]             = useState(null);
-  const [openDialog, setOpenDialog]         = useState(false);
-  
+  const [notifications, setNotifications] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -41,11 +59,20 @@ export const Notifications = () => {
 
     const q = query(
       collection(db, "notifications"),
-      where("userId", "==", user.uid)
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")
     );
 
     const unsub = onSnapshot(q, (snap) => {
-      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const list = snap.docs.map((d) => {
+        const data = d.data();
+        return {
+          id: d.id,
+          ...data,
+          timeAgo: timeAgo(data.createdAt),
+        };
+      });
+      console.log(d.id, data.time);
       setNotifications(list);
     });
 
@@ -59,7 +86,9 @@ export const Notifications = () => {
   const markAllAsRead = async () => {
     const unread = notifications.filter((n) => !n.isRead);
     await Promise.all(
-      unread.map((n) => updateDoc(doc(db, "notifications", n.id), { isRead: true }))
+      unread.map((n) =>
+        updateDoc(doc(db, "notifications", n.id), { isRead: true })
+      )
     );
   };
 
@@ -73,7 +102,7 @@ export const Notifications = () => {
 
     // send reply notification to requester
     await addDoc(collection(db, "notifications"), {
-      userId: notif.requesterId,           
+      userId: notif.requesterId,
       type: "approval",
       title: "Request Approved",
       description: `Your request for ${notif.itemTitle} was approved!`,
@@ -157,7 +186,11 @@ export const Notifications = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className={`font-medium ${n.isRead ? "opacity-80" : ""}`}>
+                      <h3
+                        className={`font-medium ${
+                          n.isRead ? "opacity-80" : ""
+                        }`}
+                      >
                         {n.title}
                       </h3>
                       <p className="text-sm opacity-60 mt-1 line-clamp-2">
@@ -166,7 +199,7 @@ export const Notifications = () => {
                       <div className="flex items-center gap-4 mt-3">
                         <span className="text-xs text-gray-500">
                           {/* format your timestamp however you like */}
-                          {new Date(n.time?.seconds * 1000).toLocaleString()}
+                          {n.timeAgo}
                         </span>
                         {n.actionRequired && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
@@ -221,11 +254,17 @@ export const Notifications = () => {
         onClose={() => setOpenDialog(false)}
         onMarkAsRead={markAsRead}
         onApprove={() =>
-    handleApproveRequest(selectedNotification.id, selectedNotification.meta)
-  }
-  onDecline={() =>
-    handleDeclineRequest(selectedNotification.id, selectedNotification.meta)
-  }
+          handleApproveRequest(
+            selectedNotification.id,
+            selectedNotification.meta
+          )
+        }
+        onDecline={() =>
+          handleDeclineRequest(
+            selectedNotification.id,
+            selectedNotification.meta
+          )
+        }
       />
     </div>
   );
