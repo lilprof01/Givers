@@ -17,56 +17,84 @@ import { useEffect, useState } from "react";
 import { auth, db } from "../../../Authentication/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState(null);
   const [editedProfile, setEditedProfile] = useState(profile);
 
-useEffect(() => {
-  const fetchUser = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      const snap = await getDoc(doc(db, "users", user.uid));
-      if (snap.exists()) {
-        const data = snap.data();
-        const userData = {
-          name: data.username || "Unnamed",
-          email: user.email,
-          location: data.address || "Not specified",
-          bio: data.bio || "",
-          phone: data.phone || "", 
-          joinDate: new Date(user.metadata.creationTime).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-          }),
-        };
-        setProfile(userData);
-        setEditedProfile(userData);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+          const data = snap.data();
+          const userData = {
+            name: data.username || "Unnamed",
+            email: user.email,
+            location: data.address || "Not specified",
+            bio: data.bio || "",
+            phone: data.phone || "",
+            joinDate: new Date(user.metadata.creationTime).toLocaleDateString(
+              "en-US",
+              {
+                year: "numeric",
+                month: "long",
+              }
+            ),
+          };
+          setProfile(userData);
+          setEditedProfile(userData);
+        }
       }
-    }
+    };
+    fetchUser();
+  }, []);
+
+  const handleSave = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const ref = doc(db, "users", user.uid);
+
+    await updateDoc(ref, {
+      username: editedProfile.name,
+      location: editedProfile.location,
+      bio: editedProfile.bio,
+      phone: editedProfile.phone,
+    });
+
+    setProfile(editedProfile);
+    setIsEditing(false);
   };
-  fetchUser();
-}, []);
 
-const handleSave = async () => {
-  const user = auth.currentUser;
-  if (!user) return;
-  const ref = doc(db, "users", user.uid);
-
-  await updateDoc(ref, {
-    username: editedProfile.name,
-    location: editedProfile.location,
-    bio: editedProfile.bio,
-    phone: editedProfile.phone,
-  });
-
-  setProfile(editedProfile);
-  setIsEditing(false);
-};
-
-if (!profile) return <div className="p-6">Loading profile...</div>;
-
+  if (!profile)
+    return (
+      <div className="flex flex-col justify-center items-center gap-4 sm:overflow-y-scroll">
+        <div class="loader">
+          <div class="box box-1">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-2">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-3">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-4">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+        </div>
+        <p>Fetching Profile Details</p>
+      </div>
+    );
 
   const handleCancel = () => {
     setEditedProfile(profile);
@@ -109,7 +137,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
   ];
 
   return (
-    <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll">
+    <div className="p-6 space-y-6 pt-22 sm:pt-10 sm:mt-0 sm:overflow-y-scroll">
       {/* Profile Header */}
       <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900 dark:to-green-900 text-gray-900 dark:text-gray-200 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
@@ -118,7 +146,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
             <div className="w-32 h-32 border-4 rounded-full border-white shadow-lg overflow-hidden">
               {/* <img src={img} alt="Profile" className="h-full w-full" /> */}
               <div className="h-full w-full flex justify-center items-center text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-blue-500 to-green-500 text-white">
-                {profile.username?.[0]?.toUpperCase() || "U"}
+                {profile.username?.[0]?.toUpperCase()}
               </div>
             </div>
             <button
@@ -231,13 +259,13 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
           </div>
 
           {/* Trust Badge */}
-          <div className="bg-white dark:bg-black/50  text-gray-900 dark:text-gray-200 rounded-xl p-4 border border-gray-200 shadow-sm">
+          <div className="bg-white dark:bg-black/50  text-gray-900 dark:text-gray-200 rounded-xl p-4 border border-gray-200 shadow-sm self-end">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Shield className="w-8 h-8 text-white" />
+              <div className="w-8 h-8 sm:w-16 sm:h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Shield className="w-4 h-4 sm:w-8 sm:h-8 text-white" />
               </div>
-              <p className="text-sm font-medium">Verified Member</p>
-              <p className="text-xs opacity-80">Trust Score: 98%</p>
+              <p className="text-xs sm:text-sm font-medium">Verified Member</p>
+              <p className="text-xs opacity-80 hidden sm:block">Trust Score: 98%</p>
             </div>
           </div>
         </div>

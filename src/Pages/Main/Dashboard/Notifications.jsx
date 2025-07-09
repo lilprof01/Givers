@@ -10,18 +10,18 @@ import {
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { auth, db } from "../../../Authentication/Firebase";
-import { differenceInMinutes, isValid } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import {
   collection,
   query,
   where,
+  orderBy,
   onSnapshot,
   updateDoc,
   deleteDoc,
   addDoc,
   doc,
   serverTimestamp,
-  orderBy,
 } from "firebase/firestore";
 import NotificationsPopup from "../../../Components/Notifications/NotificationsPopup";
 
@@ -35,17 +35,6 @@ const getIcon = (type) => {
   };
   return map[type] || <Bell className="w-5 h-5 text-gray-500" />;
 };
-function timeAgo(ts) {
-  if (!ts) return "";
-  const date = ts.toDate ? ts.toDate() : new Date(ts);
-  if (!isValid(date)) return "";
-  const mins = differenceInMinutes(new Date(), date);
-  if (mins < 1)  return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  const rem = mins % 60;
-  return rem === 0 ? `${hrs}h ago` : `${hrs}h ${rem}m ago`;
-}
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -60,19 +49,11 @@ export const Notifications = () => {
     const q = query(
       collection(db, "notifications"),
       where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc")  
     );
 
     const unsub = onSnapshot(q, (snap) => {
-      const list = snap.docs.map((d) => {
-        const data = d.data();
-        return {
-          id: d.id,
-          ...data,
-          timeAgo: timeAgo(data.createdAt),
-        };
-      });
-      console.log(d.id, data.time);
+      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
       setNotifications(list);
     });
 
@@ -198,8 +179,10 @@ export const Notifications = () => {
                       </p>
                       <div className="flex items-center gap-4 mt-3">
                         <span className="text-xs text-gray-500">
-                          {/* format your timestamp however you like */}
-                          {n.timeAgo}
+                          {formatDistanceToNow(
+                            n.createdAt?.toDate?.() || new Date(),
+                            { addSuffix: true }
+                          )}
                         </span>
                         {n.actionRequired && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
