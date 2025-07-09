@@ -184,7 +184,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
                 <div className="flex flex-wrap gap-4 opacity-80">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    <span>{proile.email}</span>
+                    <span>{profile.email}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
