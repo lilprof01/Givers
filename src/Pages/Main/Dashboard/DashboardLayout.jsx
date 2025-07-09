@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../Components/Dashboard/Sidebar";
 import MobileNav from "../../../Components/Dashboard/MobileNav";
 import Header from "../../../Components/Dashboard/Header";
@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import MyItems from "./MyItems";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
+import SettingsPage from "./Settings";
 
 const DashboardLayout = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -67,6 +68,8 @@ const DashboardLayout = () => {
         return <Profile />
       case "notifications":
         return <Notifications />
+      case "settings":
+        return <SettingsPage />
     }
   }
 
@@ -74,7 +77,7 @@ const DashboardLayout = () => {
     <main
       className={`flex flex-col sm:grid ${
         isCollapsed ? "grid-cols-[80px_1fr]" : "grid-cols-[220px_1fr]"
-      } grid-rows-[80px_1fr] sm:h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
+      } grid-rows-[80px_1fr] min-h-screen sm:h-screen transition-all duration-500 dark:bg-[#121212] dark:text-white`}
     >
       <Sidebar
         isCollapsed={isCollapsed}
@@ -98,7 +101,7 @@ const DashboardLayout = () => {
         />
       )}
       {renderContent()}
-      <DarkModeToggle />
+      {/* <DarkModeToggle /> */}
     </main>
   );
 };

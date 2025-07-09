@@ -1,5 +1,11 @@
 import {
-  Bell, Check, Clock, Gift, MessageSquare, Star, Trash2
+  Bell,
+  Check,
+  Clock,
+  Gift,
+  MessageSquare,
+  Star,
+  Trash2,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,21 +25,20 @@ import NotificationsPopup from "../../../Components/Notifications/NotificationsP
 
 const getIcon = (type) => {
   const map = {
-    request:   <Gift className="w-5 h-5 text-blue-500" />,
-    approval:  <Check className="w-5 h-5 text-green-500" />,
-    message:   <MessageSquare className="w-5 h-5 text-purple-500" />,
-    reminder:  <Clock className="w-5 h-5 text-orange-500" />,
+    request: <Gift className="w-5 h-5 text-blue-500" />,
+    approval: <Check className="w-5 h-5 text-green-500" />,
+    message: <MessageSquare className="w-5 h-5 text-purple-500" />,
+    reminder: <Clock className="w-5 h-5 text-orange-500" />,
     achievement: <Star className="w-5 h-5 text-yellow-500" />,
   };
   return map[type] || <Bell className="w-5 h-5 text-gray-500" />;
 };
 
 export const Notifications = () => {
-  const [notifications, setNotifications]   = useState([]);
-  const [selected, setSelected]             = useState(null);
-  const [selectedNotification, setSelectedNotification]             = useState(null);
-  const [openDialog, setOpenDialog]         = useState(false);
-  
+  const [notifications, setNotifications] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -59,7 +64,9 @@ export const Notifications = () => {
   const markAllAsRead = async () => {
     const unread = notifications.filter((n) => !n.isRead);
     await Promise.all(
-      unread.map((n) => updateDoc(doc(db, "notifications", n.id), { isRead: true }))
+      unread.map((n) =>
+        updateDoc(doc(db, "notifications", n.id), { isRead: true })
+      )
     );
   };
 
@@ -73,7 +80,7 @@ export const Notifications = () => {
 
     // send reply notification to requester
     await addDoc(collection(db, "notifications"), {
-      userId: notif.requesterId,           
+      userId: notif.requesterId,
       type: "approval",
       title: "Request Approved",
       description: `Your request for ${notif.itemTitle} was approved!`,
@@ -107,7 +114,7 @@ export const Notifications = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll text-gray-900 dark:text-gray-200">
+    <div className="p-6 space-y-6 pt-22 sm:pt-0 sm:mt-0 sm:overflow-y-scroll text-gray-900 dark:text-gray-200">
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Header */}
@@ -157,7 +164,11 @@ export const Notifications = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className={`font-medium ${n.isRead ? "opacity-80" : ""}`}>
+                      <h3
+                        className={`font-medium ${
+                          n.isRead ? "opacity-80" : ""
+                        }`}
+                      >
                         {n.title}
                       </h3>
                       <p className="text-sm opacity-60 mt-1 line-clamp-2">
@@ -166,16 +177,16 @@ export const Notifications = () => {
                       <div className="flex items-center gap-4 mt-3">
                         <span className="text-xs text-gray-500">
                           {/* format your timestamp however you like */}
-                          {new Date(n.time?.seconds * 1000).toLocaleString()}
+                          {/* {n.time?.toDate ? n.time.toDate().toLocaleString() : "Recently"} */}
                         </span>
                         {n.actionRequired && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                             Action Required
                           </span>
                         )}
-                        {!n.isRead && (
+                        {/* {!n.isRead && (
                           <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                        )}
+                        )} */}
                       </div>
                     </div>
 
@@ -221,11 +232,17 @@ export const Notifications = () => {
         onClose={() => setOpenDialog(false)}
         onMarkAsRead={markAsRead}
         onApprove={() =>
-    handleApproveRequest(selectedNotification.id, selectedNotification.meta)
-  }
-  onDecline={() =>
-    handleDeclineRequest(selectedNotification.id, selectedNotification.meta)
-  }
+          handleApproveRequest(
+            selectedNotification.id,
+            selectedNotification.meta
+          )
+        }
+        onDecline={() =>
+          handleDeclineRequest(
+            selectedNotification.id,
+            selectedNotification.meta
+          )
+        }
       />
     </div>
   );

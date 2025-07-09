@@ -63,7 +63,7 @@ const MyItems = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll">
+    <div className="p-6 space-y-6 pt-22 sm:pt-10 sm:mt-0 sm:overflow-y-scroll">
       {/* Top Section */}
       <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900 dark:to-green-900 text-gray-900 dark:text-gray-200 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
         <div className="flex items-center justify-between">
