@@ -1,4 +1,3 @@
-// src/pages/Notifications/Notifications.jsx
 import {
   Bell, Check, Clock, Gift, MessageSquare, Star, Trash2
 } from "lucide-react";
@@ -36,9 +35,6 @@ export const Notifications = () => {
   const [openDialog, setOpenDialog]         = useState(false);
   
 
-  /* ──────────────────────────────────────────────────────────
-     1.  Real‑time listener
-     ────────────────────────────────────────────────────────── */
   useEffect(() => {
     const user = auth.currentUser;
     if (!user) return;
@@ -56,9 +52,6 @@ export const Notifications = () => {
     return () => unsub();
   }, []);
 
-  /* ──────────────────────────────────────────────────────────
-     2.  Helpers that write back to Firestore
-     ────────────────────────────────────────────────────────── */
   const markAsRead = async (id) => {
     await updateDoc(doc(db, "notifications", id), { isRead: true });
   };
@@ -80,7 +73,7 @@ export const Notifications = () => {
 
     // send reply notification to requester
     await addDoc(collection(db, "notifications"), {
-      userId: notif.requesterId,             // must be stored on the original notif
+      userId: notif.requesterId,           
       type: "approval",
       title: "Request Approved",
       description: `Your request for ${notif.itemTitle} was approved!`,
@@ -106,7 +99,6 @@ export const Notifications = () => {
     toast.error("Request declined, the requester has been notified.");
   };
 
-  /* ────────────────────────────────────────────────────────── */
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const openNotificationDialog = (n) => {

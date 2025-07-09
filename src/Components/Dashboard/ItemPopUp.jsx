@@ -69,7 +69,7 @@ if (!reason.trim()) {
         requesterId: currentUser.uid,
         requesterName: currentUser.username,
         itemId: item.id,
-        description: `${currentUser.username} requested your ${item.title}`,
+        description: `${currentUser.username} requested your ${item.title}, kindly contact them at ${currentUser.email}`,
         message: reason,
         itemTitle: item.title,
         status: "unread",
