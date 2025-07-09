@@ -10,10 +10,12 @@ import {
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { auth, db } from "../../../Authentication/Firebase";
+import { formatDistanceToNow } from "date-fns";
 import {
   collection,
   query,
   where,
+  orderBy,
   onSnapshot,
   updateDoc,
   deleteDoc,
@@ -46,7 +48,8 @@ export const Notifications = () => {
 
     const q = query(
       collection(db, "notifications"),
-      where("userId", "==", user.uid)
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")  
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -114,7 +117,7 @@ export const Notifications = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 pt-22 sm:pt-0 sm:mt-0 sm:overflow-y-scroll text-gray-900 dark:text-gray-200">
+    <div className="p-6 space-y-6 mt-20 sm:mt-0 overflow-y-scroll text-gray-900 dark:text-gray-200">
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Header */}
@@ -176,17 +179,19 @@ export const Notifications = () => {
                       </p>
                       <div className="flex items-center gap-4 mt-3">
                         <span className="text-xs text-gray-500">
-                          {/* format your timestamp however you like */}
-                          {/* {n.time?.toDate ? n.time.toDate().toLocaleString() : "Recently"} */}
+                          {formatDistanceToNow(
+                            n.createdAt?.toDate?.() || new Date(),
+                            { addSuffix: true }
+                          )}
                         </span>
                         {n.actionRequired && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                             Action Required
                           </span>
                         )}
-                        {/* {!n.isRead && (
+                        {!n.isRead && (
                           <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                        )} */}
+                        )}
                       </div>
                     </div>
 
