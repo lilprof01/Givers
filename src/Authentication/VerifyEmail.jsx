@@ -42,7 +42,7 @@ const VerifyEmail = () => {
       <div className="sm:mx-auto sm:w-full px-[50px] md:px-0 sm:max-w-sm flex flex-col justify-center items-center">
         <p className="mt-3 w-[350px] md:w-full text-center text-[15px] md:text-[25px] font-bold tracking-tight text-black dark:text-white">
           We sent a verification email to {user.email}. Please verify before
-          continuing.
+          continuing (Also, check your spam/junk folder).
         </p>
 
         <button
