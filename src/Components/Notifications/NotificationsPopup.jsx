@@ -51,6 +51,8 @@ const NotificationsPopup = ({
           onApprove={onApprove}
           onDecline={onDecline}
         />
+
+        
       </div>
     </div>
   );

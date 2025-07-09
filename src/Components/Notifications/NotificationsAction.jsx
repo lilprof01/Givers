@@ -1,4 +1,6 @@
 import { CheckCircle, XCircle, Calendar } from "lucide-react";
+import { doc, updateDoc, serverTimestamp, collection, addDoc } from "firebase/firestore";
+import { db } from "../../Authentication/Firebase";
 
 const NotificationAction = ({
   notification,
@@ -9,6 +11,7 @@ const NotificationAction = ({
   const handleClose = () => {
     onClose();
   };
+
 
   if (notification.actionRequired && notification.type === "request") {
     return (
@@ -51,6 +54,75 @@ const NotificationAction = ({
       </div>
     );
   }
+
+  const handleApprove = async (notificationId, meta) => {
+  try {
+    // 1. Update the request document
+    await updateDoc(doc(db, "requests", meta.requestId), {
+      status: "approved",
+      updatedAt: serverTimestamp()
+    });
+
+    // 2. Mark notification as read and approved
+    await updateDoc(doc(db, "notifications", notificationId), {
+      isRead: true,
+      status: "handled",
+      updatedAt: serverTimestamp()
+    });
+
+    // 3. Create a new notification for the requester
+    await addDoc(collection(db, "notifications"), {
+      userId: meta.requesterId,
+      type: "approval",
+      title: "Your request was approved!",
+      description: `Your request for the item has been approved. Contact the giver to arrange pickup.`,
+      isRead: false,
+      createdAt: serverTimestamp(),
+      actionRequired: false,
+      relatedRequestId: meta.requestId
+    });
+
+    toast.success("Request approved. Requester has been notified.");
+  } catch (err) {
+    console.error("Failed to approve request:", err);
+    toast.error("Something went wrong. Try again.");
+  }
+};
+
+const handleDecline = async (notificationId, meta) => {
+  try {
+    // 1. Update the request document
+    await updateDoc(doc(db, "requests", meta.requestId), {
+      status: "declined",
+      updatedAt: serverTimestamp()
+    });
+
+    // 2. Mark notification as read and declined
+    await updateDoc(doc(db, "notifications", notificationId), {
+      isRead: true,
+      status: "handled",
+      updatedAt: serverTimestamp()
+    });
+
+    // 3. Create a new notification for the requester
+    await addDoc(collection(db, "notifications"), {
+      userId: meta.requesterId,
+      type: "request",
+      title: "Your request was declined",
+      description: `Sorry, your request for the item was declined.`,
+      isRead: false,
+      createdAt: serverTimestamp(),
+      actionRequired: false,
+      relatedRequestId: meta.requestId
+    });
+
+    toast.info("Request declined. Requester has been notified.");
+  } catch (err) {
+    console.error("Failed to decline request:", err);
+    toast.error("Something went wrong. Try again.");
+  }
+};
+
 
   return (
     <div className="flex justify-end gap-3 mt-6">

@@ -35,7 +35,7 @@ useEffect(() => {
           email: user.email,
           location: data.address || "Not specified",
           bio: data.bio || "",
-          phone: data.phone || "",
+          phone: data.phone || "", 
           joinDate: new Date(user.metadata.creationTime).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -118,7 +118,7 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
             <div className="w-32 h-32 border-4 rounded-full border-white shadow-lg overflow-hidden">
               {/* <img src={img} alt="Profile" className="h-full w-full" /> */}
               <div className="h-full w-full flex justify-center items-center text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-blue-500 to-green-500 text-white">
-                {userData.username?.[0]?.toUpperCase() || "U"}
+                {profile.username?.[0]?.toUpperCase() || "U"}
               </div>
             </div>
             <button
@@ -180,15 +180,15 @@ if (!profile) return <div className="p-6">Loading profile...</div>;
               </div>
             ) : (
               <div className="space-y-3">
-                <h1 className="text-3xl font-bold">{userData.name}</h1>
+                <h1 className="text-3xl font-bold">{profile.name}</h1>
                 <div className="flex flex-wrap gap-4 opacity-80">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    <span>{userData.email}</span>
+                    <span>{proile.email}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
-                    <span>{userData.address}</span>
+                    <span>{profile.address}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
