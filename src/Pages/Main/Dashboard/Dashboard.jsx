@@ -1,8 +1,4 @@
-import {
-  Gift,
-  MapPin,
-  Calendar,
-} from "lucide-react";
+import { Gift, MapPin, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import ItemPopUp from "../../../Components/Dashboard/ItemPopUp";
@@ -28,20 +24,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [giftItems, setGiftItems] = useState([]);
   const [userData, setUserData] = useState({ username: "", email: "" });
-  
-    useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            const { username = "", email = "" } = userDoc.data();
-            setUserData({ username, email });
-          }
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const { username = "", email = "" } = userDoc.data();
+          setUserData({ username, email });
         }
-      });
-  
-      return () => unsubscribe();
-    }, []);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     // live query: all items with itemStatus == "available", newest first
@@ -62,7 +58,7 @@ const Dashboard = () => {
           location: data.location,
           condition: data.itemStatus, // or another field if you store “condition”
           giver: data.giverName,
-          giverId: data.giverId, 
+          giverId: data.giverId,
           datePosted: formatDistanceToNow(
             data.createdAt?.toDate?.() || new Date(),
             { addSuffix: true }
@@ -91,7 +87,7 @@ const Dashboard = () => {
         }
         try {
           // 🔍 Debugging: Log the auth user before fetching Firestore data
-          console.log("Auth user:", user);
+          // console.log("Auth user:", user);
 
           // Fetch additional user data from Firestore
           const userDocRef = doc(db, "users", user.uid);
@@ -99,7 +95,7 @@ const Dashboard = () => {
 
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
-            console.log("Firestore user data:", userData);
+            // console.log("Firestore user data:", userData);
 
             setUser({ uid: user.uid, email: user.email, ...userData });
             setIsVerified(true);
@@ -129,6 +125,36 @@ const Dashboard = () => {
     setSelectedItem(null);
   };
 
+  if (giftItems.length <= 0) {
+    return (
+      <div className="flex flex-col justify-center items-center gap-4 sm:overflow-y-scroll">
+        <div class="loader">
+          <div class="box box-1">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-2">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-3">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+          <div class="box box-4">
+            <div class="side-left"></div>
+            <div class="side-right"></div>
+            <div class="side-top"></div>
+          </div>
+        </div>
+        <p>Fetching available items</p>
+      </div>
+    );
+  };
+
   return (
     <div className="p-6 space-y-6 pt-22 sm:pt-10 sm:mt-0 sm:overflow-y-scroll">
       {/* Welcome Section */}
@@ -141,7 +167,10 @@ const Dashboard = () => {
             <p className="opacity-70 mb-4">
               You've made a positive impact in your community. Keep giving!
             </p>
-            <Link to={'/give'} className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full p-3 cursor-pointer">
+            <Link
+              to={"/give"}
+              className="bg-gradient-to-r from-blue-500 to-green-500 dark:from-blue-600 dark:to-green-600 hover:from-blue-600 hover:to-green-600 text-white rounded-full p-3 cursor-pointer"
+            >
               Share New Item
             </Link>
           </div>

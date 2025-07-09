@@ -35,7 +35,7 @@ const VerifyEmail = () => {
       <ToastContainer position="top-center" autoClose={3000} />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-[25px] lg:text-2xl/9 font-bold tracking-tight text-[#6C3BAA]">
+        <h2 className="mt-10 text-center text-[25px] lg:text-2xl/9 font-bold tracking-tight text-xl bg-clip-text bg-gradient-to-r from-green-400 to-blue-600 text-transparent">
           Verify Your Email
         </h2>
       </div>
@@ -48,7 +48,7 @@ const VerifyEmail = () => {
         <button
           type="submit"
           onClick={handleResend}
-          className="mt-4 flex w-[150px] justify-center rounded-md bg-[#6C3BAA] px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs"
+          className="mt-4 flex w-[150px] justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs"
         >
           Resend Email
         </button>
