@@ -46,16 +46,16 @@ Givers is a modern web app that enables users to give away unused items and requ
 
 ## Setup & Installation
 
-** Clone the repository
-** Install dependencies
+- Clone the repository
+- Install dependencies
 npm install
-** Set up Firebase
-** Create a new project in Firebase Console
-** Enable Authentication (Email/Password)
-** Create Firestore Database
-** Configure rules
-** Start the development server
-** npm run dev
+- Set up Firebase
+- Create a new project in Firebase Console
+- Enable Authentication (Email/Password)
+- Create Firestore Database
+- Configure rules
+- Start the development server
+- npm run dev
 
 
 
