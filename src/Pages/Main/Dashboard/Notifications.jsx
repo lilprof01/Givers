@@ -49,7 +49,7 @@ export const Notifications = () => {
     const q = query(
       collection(db, "notifications"),
       where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")  
+      orderBy("createdAt", "desc")
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -143,7 +143,7 @@ export const Notifications = () => {
       {/* List */}
       <div className="space-y-3">
         {notifications.length === 0 ? (
-          <div className="p-12 text-center bg-white/80 backdrop-blur-sm">
+          <div className="p-12 text-center">
             <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">No notifications</h3>
             <p className="opacity-70">

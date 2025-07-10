@@ -144,7 +144,7 @@ const MyItems = () => {
                     <div className="text-4xl mb-2">{item.image}</div>
                   )}
                   <h4 className="font-semibold">{item.title}</h4>
-                  <p className="text-sm opacity-70">{item.description}</p>
+                  <p className="text-sm opacity-70 line-clamp-3">{item.description}</p>
                 </div>
 
                 <div className="space-y-2 text-xs text-gray-500 mb-3">
@@ -186,16 +186,16 @@ const MyItems = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <Package className="w-12 h-12 mx-auto mb-4" />
             <h4 className="text-lg font-medium mb-2">No items posted yet</h4>
-            <p className="text-gray-600 mb-4">
+            <p className="mb-4">
               Start sharing items with your community!
             </p>
             <Link
               to="/give"
               className="bg-gradient-to-r from-blue-500 to-green-500
                          hover:from-blue-600 hover:to-green-600
-                         text-white rounded-full px-4 py-2 inline-flex items-center gap-2"
+                         text-white rounded-full px-4 py-2 inline-flex items-center gap-2 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               Post Your First Item
@@ -255,13 +255,13 @@ const MyItems = () => {
               <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Heart className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <h3 className="text-lg font-medium mb-2">
                 No items received yet
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="opacity-60 mb-4">
                 Start browsing available items in your community!
               </p>
-              <button variant="outline" className="rounded-full">
+              <button onClick={() => window.location.reload()} className="rounded-full underline cursor-pointer">
                 Browse Available Items
               </button>
             </div>

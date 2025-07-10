@@ -2,10 +2,15 @@ import { Calendar, Check, Heart, MapPin, Package } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { auth, db } from "../../Authentication/Firebase";
-import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
-const ItemPopUp = ({ item, isOpen, onClose }) => {
-  const [request, setRequest] = useState(false);
+const ItemPopUp = ({ item, isOpen, onClose, request, setRequest }) => {
   const [reason, setReason] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -28,26 +33,32 @@ const ItemPopUp = ({ item, isOpen, onClose }) => {
 
   const handleSendRequest = async () => {
     // if (!currentUser || !item?.id || !reason.trim()) {
-      // console.error("Error:", err)
+    // console.error("Error:", err)
     //   toast.error("All fields required");
     //   return;
     // }
     if (!currentUser) {
-  console.error("❌ currentUser is missing");
-  toast.error("User not logged in");
-  return;
-}
-if (!item?.id) {
-  console.error("❌ item.id is missing");
-  toast.error("Invalid item data");
-  return;
-}
-if (!reason.trim()) {
-  console.error("Reason is empty");
-  toast.error("Please enter your reason");
-  return;
-}
+      console.error("❌ currentUser is missing");
+      toast.error("User not logged in");
+      return;
+    }
+    if (!item?.id) {
+      console.error("❌ item.id is missing");
+      toast.error("Invalid item data");
+      return;
+    }
+    if (!reason.trim()) {
+      console.error("Reason is empty");
+      toast.error("Please enter your reason");
+      return;
+    }
 
+    if (item?.giverId === currentUser.uid) {
+      console.error("Internal error");
+      toast.error("You can't request your own item");
+      setRequest(false);
+      return;
+    }
 
     try {
       // Add to requests collection
@@ -62,7 +73,6 @@ if (!reason.trim()) {
         createdAt: serverTimestamp(),
       });
 
-      // Optional: Add a notification for the giver
       await addDoc(collection(db, "notifications"), {
         userId: item.giverId,
         type: "request",
@@ -75,17 +85,22 @@ if (!reason.trim()) {
         status: "unread",
         createdAt: serverTimestamp(),
         meta: {
-    requesterName: currentUser.username,
-    itemName: item.title,   
-    pickupTime: "Flexible",
-    duration: "2 weeks"
-  }
+          requesterName: currentUser.username,
+          itemName: item.title,
+          pickupTime: "Flexible",
+          duration: "2 weeks",
+        },
       });
 
       toast.success("Request sent successfully!");
-      setRequest(false);
-      setReason("");
-      onClose();
+      const timeout = () => setTimeout(() => {
+        setRequest(false);
+        setReason("");
+        onClose();
+      }, 3000);
+
+      timeout();
+      return clearTimeout(timeout);
     } catch (err) {
       console.error("Failed to send request:", err);
       toast.error("Something went wrong!");

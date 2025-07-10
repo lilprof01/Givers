@@ -10,11 +10,13 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
 
 const CLOUD_NAME = "dcmzckthf";
 const UPLOAD_PRESET = "givers";
 
 const GiveItemForm = () => {
+  const navigate = useNavigate();
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -106,6 +108,9 @@ const GiveItemForm = () => {
       });
 
       toast.success("Item submitted 🎉");
+      const timeout = () => setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
       /* reset */
       setItemName("");
       setCategory("");
@@ -115,6 +120,9 @@ const GiveItemForm = () => {
       setFile(null);
       setPreviewURL("");
       setProgress(0);
+
+      timeout();
+      return clearTimeout(timeout);
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Something went wrong");
@@ -226,7 +234,12 @@ const GiveItemForm = () => {
           {/* Image picker */}
           <div className="space-y-2">
             <label className="block font-semibold">Item photo</label>
-            <input type="file" accept="image/*" onChange={handleFile} className="w-40 p-2 bg-gray-200 rounded-lg cursor-pointer text-blue-600" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFile}
+              className="w-40 p-2 bg-gray-200 rounded-lg cursor-pointer text-blue-600"
+            />
             {previewURL && (
               <img
                 src={previewURL}

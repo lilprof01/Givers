@@ -17,6 +17,7 @@ import { formatDistanceToNow } from "date-fns";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
+  const [request, setRequest] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -123,11 +124,12 @@ const Dashboard = () => {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedItem(null);
+    setRequest(false);
   };
 
   if (giftItems.length <= 0) {
     return (
-      <div className="flex flex-col justify-center items-center gap-4 sm:overflow-y-scroll">
+      <div className="flex flex-col justify-center items-center gap-4 min-h-screen sm:overflow-y-scroll">
         <div class="loader">
           <div class="box box-1">
             <div class="side-left"></div>
@@ -240,6 +242,8 @@ const Dashboard = () => {
         item={selectedItem}
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
+        request={request}
+        setRequest={setRequest}
       />
     </div>
   );
