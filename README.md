@@ -60,28 +60,27 @@ npm install
 
 
 ## Testing Features
-** Sign up with email → verify email → login flow
-** Update profile (username, email, bio)
-** Post new item → view it in “My Items”
-** Test toggles (dark mode, notifications)
-** Test Firestore updates and Firestore rules
-** Toggle public profile ON/OFF
+- Sign up with email → verify email → login flow
+- Update profile (username, email, bio)
+- Post new item → view it in “My Items”
+- Test toggles (dark mode, notifications)
+- Test Firestore updates and Firestore rules
+- Toggle public profile ON/OFF
 
 ## Future Improvements
-** Add search and filter by category or location
-** Add mobile app version (using React Native)
-** Enable image uploads for items
-** Push notification support via Firebase Cloud Messaging (FCM)
-** Add admin dashboard for moderation
+- Add search and filter by category or location
+- Add mobile app version (using React Native)
+- Enable image uploads for items
+- Push notification support via Firebase Cloud Messaging (FCM)
+- Add admin dashboard for moderation
 
 ## Contributing
 Contributions are welcome! Here's how you can help:
-
-** Fork the repository
-** Create a new branch (git checkout -b feature-branch)
-** Commit your changes (git commit -m 'Add awesome feature')
-** Push to your fork (git push origin feature-branch)
-** Open a Pull Request 
+- Fork the repository
+- Create a new branch (git checkout -b feature-branch)
+- Commit your changes (git commit -m 'Add awesome feature')
+- Push to your fork (git push origin feature-branch)
+- Open a Pull Request 
 
 ## License
 This project is open-sourced under the MIT License.
