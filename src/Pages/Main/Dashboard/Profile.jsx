@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import img from "/assets/images/giveHeart.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth, db } from "../../../Authentication/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
@@ -21,6 +21,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState(null);
   const [editedProfile, setEditedProfile] = useState(profile);
+  const [profileImage, setProfileImage] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -67,9 +68,23 @@ const Profile = () => {
     setIsEditing(false);
   };
 
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("Selected file:", file.name);
+      setProfileImage(URL.createObjectURL(file))
+    }
+  };
+
   if (!profile)
     return (
-      <div className="flex flex-col justify-center items-center gap-4 sm:overflow-y-scroll">
+      <div className="flex flex-col justify-center items-center gap-4 min-h-screen sm:overflow-y-scroll">
         <div class="loader">
           <div class="box box-1">
             <div class="side-left"></div>
@@ -146,14 +161,21 @@ const Profile = () => {
             <div className="w-32 h-32 border-4 rounded-full border-white shadow-lg overflow-hidden">
               {/* <img src={img} alt="Profile" className="h-full w-full" /> */}
               <div className="h-full w-full flex justify-center items-center text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-blue-500 to-green-500 text-white">
-                {profile.username?.[0]?.toUpperCase()}
+                {profileImage === "" ? <p>{profile.username?.[0]?.toUpperCase() || "U"}</p>
+                : <img src={profileImage} className="w-full h-full object-cover" />}
               </div>
             </div>
             <button
-              size="icon"
+              onClick={handleButtonClick}
               className="absolute -bottom-2 -right-2 rounded-full bg-white p-2 text-gray-600 hover:bg-gray-50 shadow-lg border border-gray-200 cursor-pointer"
             >
               <Camera className="w-5 h-5" />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
             </button>
           </div>
 
@@ -265,7 +287,9 @@ const Profile = () => {
                 <Shield className="w-4 h-4 sm:w-8 sm:h-8 text-white" />
               </div>
               <p className="text-xs sm:text-sm font-medium">Verified Member</p>
-              <p className="text-xs opacity-80 hidden sm:block">Trust Score: 98%</p>
+              <p className="text-xs opacity-80 hidden sm:block">
+                Trust Score: 98%
+              </p>
             </div>
           </div>
         </div>

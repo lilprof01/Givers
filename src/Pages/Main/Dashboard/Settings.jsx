@@ -3,8 +3,10 @@ import { Bell, Globe, Lock, Palette, Shield, User } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import { useDarkMode } from "../../../Context/themeContext";
 import ToggleSwitch from "../../../Components/Ui/toggleSwitch";
+import { Link, useNavigate } from "react-router";
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
   const { darkMode, setDarkMode } = useDarkMode();
   const [settings, setSettings] = useState({
     emailNotifications: true,
@@ -33,35 +35,6 @@ const SettingsPage = () => {
       </div>
 
       <div className="grid gap-6 w-full">
-        {/* Account Settings */}
-        <div className="shadow-sm border-gray-100 p-6 rounded-lg">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <User className="w-5 h-5 text-blue-500" />
-              <div className="text-xl sm:text-2xl font-semibold">Account Settings</div>
-            </div>
-            <div className="opacity-70">
-              Update your personal information and account details.
-            </div>
-          </div>
-          <div className="space-y-4 py-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="display-name">Display Name</label>
-                <input id="display-name" className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg" defaultValue="John Doe" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email">Email Address</label>
-                <input id="email" type="email" className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg" defaultValue="john@example.com" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="bio">Bio</label>
-              <input id="bio" placeholder="Tell others about yourself..." className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg" />
-            </div>
-          </div>
-        </div>
-
         {/* Privacy Settings */}
         <div className="shadow-sm border-gray-100 p-6 rounded-lg">
           <div className="space-y-1">
@@ -88,10 +61,10 @@ const SettingsPage = () => {
             <div className="space-y-4">
               <h4 className="text-sm font-medium">Password & Authentication</h4>
               <div className="space-y-3">
-                <button className="w-full justify-start flex items-center gap-4 border border-gray-300 dark:border-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-400/20 transition-all duration-300">
+                <Link to={'/forgotpassword'} className="w-full justify-start flex items-center gap-4 border border-gray-300 dark:border-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-400/20 transition-all duration-300">
                   <Lock className="w-5 h-5 mr-2" strokeWidth={1} />
                   Change Password
-                </button>
+                </Link>
                 <button className="w-full justify-start flex items-center gap-4 border border-gray-300 dark:border-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-400/20 transition-all duration-300">
                   <Shield className="w-5 h-5 mr-2" strokeWidth={1} />
                   Enable Two-Factor Authentication
